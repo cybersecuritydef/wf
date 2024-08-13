@@ -6,10 +6,10 @@
 #include "common.h"
 
 
-bool filter_code(char *codes, const long code);
+bool filter_code(char *match, const long code);
 
-bool filter_size(char *sizes, const size_t len);
+bool filter_size(char *match, const size_t len);
 
-bool filter_word(char *words, const char *content);
+bool filter_word(char *match, const char *content);
 
 #endif
