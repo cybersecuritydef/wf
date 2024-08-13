@@ -33,7 +33,7 @@ void help(void){
     printf("\t-m\t--method=\t: HTTP method request (default: GET)\n");
     printf("\t-b\t\t\t: Show response body (default: false)\n");
     printf("\t-p\t--proxy=\t: Use proxy \"http://example.com:8080\" (Used: http://, socks4://, socks4a://, socks5://, socks5h://)\n");
-    printf("\t-V\t--version=\t\t: Version HTTP protocol (default: HTTP/1.1)\n\n\n");
+    printf("\t-V\t--version-http=\t: Version HTTP protocol (default: HTTP/1.1)\n\n\n");
 
     printf("\t--hsize=\t\t: Hide response size. Comma seperated lists response sizes [,]\n");
     printf("\t--hcode=\t\t: Hide response code. Comma seperated lists response codes [,]\n");
@@ -69,7 +69,7 @@ int main(int argc, char **argv){
         {"method", 1, NULL, 'm'},
         {"cookie", 1, NULL, 'c'},
         {"headers", 1, NULL, 'H'},
-        {"version", 1, NULL, 'V'},
+        {"version-http", 1, NULL, 'V'},
         {"proxy", 1, NULL, 'p'},
         {"ssize", 1, NULL, '0'},
         {"scode", 1, NULL, '1'},
