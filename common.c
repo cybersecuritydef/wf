@@ -85,6 +85,7 @@ char *strchrupper(const char *str, const int index){
                 else
                     upper[i] = str[i];
             }
+            upper[i] = '\0'; 
             return upper;
         }
     }
@@ -102,6 +103,7 @@ char *strchrlower(const char *str, const int index){
                 else
                     lower[i] = str[i];
             }
+            lower[i] = '\0';
             return lower;
         }
     }
