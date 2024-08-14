@@ -7,20 +7,20 @@
 #include "common.h"
 
 
-void add_dictlists(struct dictlists *dict, const char *value){
+void add_dictlists(dictlists *dict, const char *value){
     dict->dicts = add_last(dict->dicts, value);
     dict->count++;
 }
 
 
-void add_wordlists(struct wordlists *word, const char *value){
+void add_wordlists(wordlists *word, const char *value){
     word->words = add_first(word->words, value);
     word->count++;
 }
 
-struct wordlists *read_wordlists(const char *filename){
+wordlists *read_wordlists(const char *filename){
     FILE *file = NULL;
-    struct wordlists *word = NULL;
+    wordlists *word = NULL;
     char buf[LEN_BUF] = {'\0'};
     if((file = fopen(filename, "r"))){
         if((word = (struct wordlists*)malloc(sizeof(struct wordlists)))){
@@ -42,12 +42,12 @@ struct wordlists *read_wordlists(const char *filename){
     return NULL;
 }
 
-void free_dictlists(struct dictlists *dict){
+void free_dictlists(dictlists *dict){
     free_list(&dict->dicts);
     dict->count = 0;
 }
 
-void free_wordlists(struct wordlists *word){
+void free_wordlists(wordlists *word){
     free_list(&word->words);
     word->count = 0;
 }
