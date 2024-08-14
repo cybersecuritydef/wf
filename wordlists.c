@@ -23,7 +23,7 @@ wordlists *read_wordlists(const char *filename){
     wordlists *word = NULL;
     char buf[LEN_BUF] = {'\0'};
     if((file = fopen(filename, "r"))){
-        if((word = (struct wordlists*)malloc(sizeof(struct wordlists)))){
+        if((word = (wordlists*)malloc(sizeof(wordlists)))){
             word->count = 0;
             word->words = NULL;
             while(fgets(buf, sizeof(buf), file) != NULL){
