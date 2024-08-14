@@ -27,8 +27,7 @@ wordlists *read_wordlists(const char *filename){
             word->count = 0;
             word->words = NULL;
             while(fgets(buf, sizeof(buf), file) != NULL){
-                if(buf[strlen(buf) - 1] == '\n')
-                    buf[strlen(buf) - 1] = '\0';
+                buf[strlen(buf) - 1] = '\0';
                 add_wordlists(word, buf);
             }
             fclose(file);
