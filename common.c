@@ -17,7 +17,7 @@ char *strrep(const char *str, const char *oldstr, const char *newstr){
     char *tmp = NULL;
     size_t len = 0;
     if(str && oldstr && newstr){
-        len = strlen(str) - strlen(oldstr) + strlen(newstr);
+        len = (strlen(str) - strlen(oldstr)) + strlen(newstr);
         if((tmp = strstr(str, oldstr)) != NULL){
             if((nstr = (char*)calloc(len + 1, sizeof(char)))){
                 strncat(nstr, str, tmp - str);
