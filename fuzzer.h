@@ -29,7 +29,7 @@ typedef struct{
     bool recursion;
     bool verbose;
     bool body;
-    struct dictlists dict;
+    dictlists dict;
 }options;
 
 void fuzzer(options *opts);
