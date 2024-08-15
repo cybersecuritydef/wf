@@ -24,7 +24,7 @@ typedef struct{
 typedef struct{
     size_t code;
     size_t len;
-    double resp_time;
+    double total_time;
     char *content;
     char *headers;
 }response;
