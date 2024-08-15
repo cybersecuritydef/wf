@@ -17,6 +17,7 @@ typedef struct{
     char *postdata;
     headers *header;
     bool verify;
+    bool follow;
     long timeout;
 }request;
 
