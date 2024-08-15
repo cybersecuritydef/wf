@@ -7,12 +7,6 @@
 #include "common.h"
 
 
-void add_dictlists(dictlists *dict, const char *value){
-    dict->dicts = add_last(dict->dicts, value);
-    dict->count++;
-}
-
-
 void add_wordlists(wordlists *word, const char *value){
     word->words = add_first(word->words, value);
     word->count++;
@@ -41,10 +35,6 @@ wordlists *read_wordlists(const char *filename){
     return NULL;
 }
 
-void free_dictlists(dictlists *dict){
-    free_list(&dict->dicts);
-    dict->count = 0;
-}
 
 void free_wordlists(wordlists *word){
     free_list(&word->words);
