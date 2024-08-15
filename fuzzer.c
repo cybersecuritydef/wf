@@ -24,7 +24,7 @@ void fuzzer(options *opts){
     response *resp = NULL;
     memset(&req, '\0', sizeof(req));
     new_request(opts->method, opts->version, opts->url, NULL, &req);
-    requests(&req);
+    resp = requests(&req);
     free_request(&req);
     printf("conde: %ld", resp->code);
     free(resp);
