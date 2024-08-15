@@ -21,8 +21,9 @@ typedef struct{
 }request;
 
 typedef struct{
-    long code;
+    size_t code;
     size_t len;
+    double resp_time;
     char *content;
     char *headers;
 }response;
