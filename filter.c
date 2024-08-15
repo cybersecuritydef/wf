@@ -6,33 +6,31 @@
 #include "filter.h"
 
 
-static struct list *split(char *match){
-    struct list *ls = NULL;
-    char *v = NULL;
+bool filter(char *match, const size_t v){
+    char *delim = NULL;
+    char *value = NULL;
     if(match){
-        if(strchr(match, ',')){
-            while((v = strtok_r(match, ",", &match))){
-                ls = add_last(ls, v);
-            }
+        value = strtok_r(match, ",", &delim);
+        while(value){
+            if(strtol(value, NULL, 10) == v)
+                return true;
+            value = strtok_r(NULL, ",", &delim);
         }
-        else
-            ls = add_last(ls, match);
-        return ls;
     }
-    return NULL;
-}
-
-
-bool filter_code(char *match, const long code){
-    return false;
-}
-
-
-bool filter_size(char *match, const size_t len){
     return false;
 }
 
 
 bool filter_word(char *match, const char *content){
+    char *delim = NULL;
+    char *value = NULL;
+    if(match){
+        value = strtok_r(match, ",", &delim);
+        while(value){
+            if(strstr(content, value))
+                return true;
+            value = strtok_r(NULL, ",", &delim);
+        }
+    }
     return false;
 }

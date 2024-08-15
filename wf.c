@@ -32,7 +32,7 @@ void help(void){
     printf("\t-H\t--headers=\t: Use header \"Key: Value\". Comma seperated lists headers [,]\n");
     printf("\t-m\t--method=\t: HTTP method request (default: GET)\n");
     printf("\t-b\t\t\t: Show response body (default: false)\n");
-    printf("\t-p\t--proxy=\t: Use proxy \"http://example.com:8080\" (Used: http://, socks4://, socks4a://, socks5://, socks5h://)\n");
+    printf("\t-p\t--proxy=\t: Use proxy \"http://example.com:8080\" (Used: https:// http://, socks4://, socks4a://, socks5://, socks5h://)\n");
     printf("\t-V\t--version-http=\t: Version HTTP protocol (default: HTTP/1.1)\n\n\n");
 
     printf("\t--hsize=\t\t: Hide response size. Comma seperated lists response sizes [,]\n");
@@ -149,6 +149,10 @@ int main(int argc, char **argv){
             default :
                 die("[-] Invalid argument!");
         }
+    }
+    if(argc == 1){
+        help();
+        return 0;
     }
 
     fuzzer(&opts);

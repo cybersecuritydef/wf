@@ -6,39 +6,26 @@
 #include "fuzzer.h"
 
 
+static void new_request(const char *method, const char *http_ver, const char *url, headers *h, request *req){
+    if(method)
+        req->method = strdup(method);
+
+    if(http_ver)
+        req->http_ver = strdup(http_ver);
+    else
+        req->http_ver = strdup("HTTP/1.1");
+
+    req->url = strdup(url);
+
+}
 
 void fuzzer(options *opts){
-    if(opts->method)
-        printf("Method: %s\n", opts->method);
-    if(opts->headers)
-        printf("Headers: %s\n", opts->headers);
-    if(opts->cookies)
-        printf("Cookies: %s\n", opts->cookies);
-    if(opts->url)
-        printf("Url: %s\n", opts->url);
-    if(opts->proxy)
-        printf("Proxy: %s\n", opts->proxy);
-    if(opts->encode)
-        printf("Encode: %s\n", opts->encode);
-    if(opts->postdata)
-        printf("Post data: %s\n", opts->postdata);
-    if(opts->hcode)
-        printf("Hcode: %s\n", opts->hcode);
-    if(opts->hsize)
-        printf("Hsize: %s\n", opts->hsize);
-    if(opts->hword)
-        printf("Hword: %s\n", opts->hword);
-    if(opts->scode)
-        printf("Scode: %s\n", opts->scode);
-    if(opts->ssize)
-        printf("Ssize: %s\n", opts->ssize);
-    if(opts->sword)
-        printf("Sword: %s\n", opts->sword);
-    if(opts->version)
-        printf("Version HTTP: %s\n", opts->version);
-    printf("Verbose: %d\n", opts->verbose);
-    printf("Follow: %d\n", opts->follow);
-    printf("Recursion: %d\n", opts->recursion);
-    printf("Show body: %d\n", opts->body);
-    printf("Threads: %d\n", opts->threads);
+    request req;
+    response *resp = NULL;
+    memset(&req, '\0', sizeof(req));
+    new_request(opts->method, opts->version, opts->url, NULL, &req);
+    requests(&req);
+    free_request(&req);
+    printf("conde: %ld", resp->code);
+    free(resp);
 }
