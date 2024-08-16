@@ -7,10 +7,10 @@
 
 
 static void new_request(const char *method, const char *http_ver, const char *url, headers *h, request *req){
-    if(method)
+    if(method != NULL)
         req->method = strdup(method);
 
-    if(http_ver)
+    if(http_ver != NULL)
         req->http_ver = strdup(http_ver);
     else
         req->http_ver = strdup("HTTP/1.1");
