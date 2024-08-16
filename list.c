@@ -9,8 +9,8 @@
 
 struct list *find_list(struct list *ls, const char *value){
     struct list *cur = ls;
-    if(cur && value){
-        while(cur && strcmp(cur->data, value))
+    if((cur && value) != NULL){
+        while(cur != NULL && strcmp(cur->data, value) != 0)
             cur = cur->next;
         return cur;
     }
@@ -20,7 +20,7 @@ struct list *find_list(struct list *ls, const char *value){
 
 struct list *first_list(struct list *ls){
     struct list *first = NULL;
-    if(ls){
+    if(ls != NULL){
         first = ls;
         return first;
     }
@@ -29,9 +29,9 @@ struct list *first_list(struct list *ls){
 
 struct list *last_list(struct list *ls){
     struct list *last = NULL;
-    if(ls){
+    if(ls != NULL){
         last = ls;
-        while(last->next){
+        while(last->next != NULL){
             last = last->next;
         }
         return last;
@@ -41,8 +41,8 @@ struct list *last_list(struct list *ls){
 
 struct list *add_first(struct list *ls, const char *value){
     struct list *newls = NULL;
-    if(value){
-        if((newls = (struct list*)malloc(sizeof(struct list)))){
+    if(value != NULL){
+        if((newls = (struct list*)malloc(sizeof(struct list))) != NULL){
             newls->data = strdup(value);
             newls->next = ls;
             ls = newls;
@@ -57,8 +57,8 @@ struct list *add_first(struct list *ls, const char *value){
 struct list *add_last(struct list *ls, const char *value){
     struct list *newls = NULL;
     struct list *last = NULL;
-    if(ls){
-        if((newls = (struct list*)malloc(sizeof(struct list)))){
+    if(ls != NULL){
+        if((newls = (struct list*)malloc(sizeof(struct list))) != NULL){
             newls->data = strdup(value);
             newls->next = NULL;
             last = last_list(ls);
@@ -74,7 +74,7 @@ struct list *add_last(struct list *ls, const char *value){
 
 void free_list(struct list **ls){
     struct list *tmp = NULL;
-    if(ls && (*ls)){
+    if((ls && (*ls)) != NULL){
         while((*ls)->next){
             tmp = (*ls);
             (*ls) = (*ls)->next;
