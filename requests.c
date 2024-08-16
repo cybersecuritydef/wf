@@ -46,7 +46,7 @@ response *requests(const request *req){
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, req->verify);
 
             if(curl_easy_perform(curl)){
-                if((resp = (response*)malloc(sizeof(response)))){
+                if((resp = (response*)malloc(sizeof(response))) != NULL){
                     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
                     curl_easy_cleanup(curl);
                     return resp;
