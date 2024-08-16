@@ -9,7 +9,7 @@
 response *requests(const request *req){
     CURL *curl = NULL;
     response *resp = NULL;
-    if(req){
+    if(req != NULL){
         if((curl = curl_easy_init())){
             curl_easy_setopt(curl, CURLOPT_URL, req->url);
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
