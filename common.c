@@ -77,7 +77,7 @@ char *strlower(const char *str){
 char *strchrupper(const char *str, const int index){
     char *upper = NULL;
     int i = 0;
-    if(str && index >= 0){
+    if(str != NULL && index >= 0){
         if((upper = (char*)calloc(strlen(str) + 1, sizeof(char)))){
             for(i = 0; str[i] != '\0'; i++){
                 if(i == index)
