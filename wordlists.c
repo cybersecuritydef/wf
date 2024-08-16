@@ -16,8 +16,8 @@ wordlists *read_wordlists(const char *filename){
     FILE *file = NULL;
     wordlists *word = NULL;
     char buf[LEN_BUF] = {'\0'};
-    if((file = fopen(filename, "r"))){
-        if((word = (wordlists*)malloc(sizeof(wordlists)))){
+    if((file = fopen(filename, "r")) != NULL){
+        if((word = (wordlists*)malloc(sizeof(wordlists))) != NULL){
             word->count = 0;
             word->words = NULL;
             while(fgets(buf, sizeof(buf), file) != NULL){
