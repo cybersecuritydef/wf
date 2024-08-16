@@ -75,7 +75,7 @@ struct list *add_last(struct list *ls, const char *value){
 void free_list(struct list **ls){
     struct list *tmp = NULL;
     if((ls && (*ls)) != NULL){
-        while((*ls)->next){
+        while((*ls)->next != NULL){
             tmp = (*ls);
             (*ls) = (*ls)->next;
             free(tmp->data);
