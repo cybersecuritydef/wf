@@ -64,22 +64,22 @@ response *requests(const request *req){
 }
 
 void free_request(request *req){
-    if(req->method)
+    if(req->method != NULL)
         free(req->method);
 
-    if(req->url)
+    if(req->url != NULL)
         free(req->url);
 
-    if(req->http_ver)
+    if(req->http_ver != NULL)
         free(req->http_ver);
 
-    if(req->cookie)
+    if(req->cookie != NULL)
         free(req->cookie);
 
-    if(req->postdata)
+    if(req->postdata != NULL)
         free(req->postdata);
 
-    if(req->proxy)
+    if(req->proxy != NULL)
         free(req->proxy);
     memset(&req, '\0', sizeof(req));
 }
