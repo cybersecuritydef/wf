@@ -10,15 +10,15 @@ response *requests(const request *req){
     CURL *curl = NULL;
     response *resp = NULL;
     if(req != NULL){
-        if((curl = curl_easy_init())){
+        if((curl = curl_easy_init()) != NULL){
             curl_easy_setopt(curl, CURLOPT_URL, req->url);
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, req->timeout);
 
-            if(req->method)
+            if(req->method != NULL)
                 curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, req->method);
 
-            if(req->http_ver){
+            if(req->http_ver != NULL){
                 if(strcmp(req->http_ver, "HTTP/1.0") == 0)
                     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
                 else if(strcmp(req->http_ver, "HTTP/1.1") == 0)
