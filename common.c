@@ -95,8 +95,8 @@ char *strchrupper(const char *str, const int index){
 char *strchrlower(const char *str, const int index){
     char *lower = NULL;
     int i = 0;
-    if(str && index >= 0){
-        if((lower = (char*)calloc(strlen(str) + 1, sizeof(char)))){
+    if(str != NULL && index >= 0){
+        if((lower = (char*)calloc(strlen(str) + 1, sizeof(char))) != NULL){
             for(i = 0; str[i] != '\0'; i++){
                 if(i == index)
                     lower[i] = tolower(str[i]);
