@@ -7,12 +7,6 @@
 #include "common.h"
 
 
-void add_dictlists(dictlists *dict, const char *value){
-    dict->dicts = add_last(dict->dicts, value);
-    dict->count++;
-}
-
-
 void add_wordlists(wordlists *word, const char *value){
     word->words = add_first(word->words, value);
     word->count++;
@@ -22,8 +16,8 @@ wordlists *read_wordlists(const char *filename){
     FILE *file = NULL;
     wordlists *word = NULL;
     char buf[LEN_BUF] = {'\0'};
-    if((file = fopen(filename, "r"))){
-        if((word = (wordlists*)malloc(sizeof(wordlists)))){
+    if((file = fopen(filename, "r")) != NULL){
+        if((word = (wordlists*)malloc(sizeof(wordlists))) != NULL){
             word->count = 0;
             word->words = NULL;
             while(fgets(buf, sizeof(buf), file) != NULL){
@@ -41,10 +35,6 @@ wordlists *read_wordlists(const char *filename){
     return NULL;
 }
 
-void free_dictlists(dictlists *dict){
-    free_list(&dict->dicts);
-    dict->count = 0;
-}
 
 void free_wordlists(wordlists *word){
     free_list(&word->words);

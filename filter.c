@@ -9,9 +9,9 @@
 bool filter(char *match, const size_t v){
     char *delim = NULL;
     char *value = NULL;
-    if(match){
+    if(match != NULL){
         value = strtok_r(match, ",", &delim);
-        while(value){
+        while(value != NULL){
             if(strtol(value, NULL, 10) == v)
                 return true;
             value = strtok_r(NULL, ",", &delim);
@@ -24,9 +24,9 @@ bool filter(char *match, const size_t v){
 bool filter_word(char *match, const char *content){
     char *delim = NULL;
     char *value = NULL;
-    if(match){
+    if(match != NULL){
         value = strtok_r(match, ",", &delim);
-        while(value){
+        while(value != NULL){
             if(strstr(content, value))
                 return true;
             value = strtok_r(NULL, ",", &delim);

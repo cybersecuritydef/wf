@@ -11,6 +11,9 @@
 
 typedef struct{
     int threads;
+    char *wordlist;
+    char *extlist;
+    char *ext;
     char *headers;
     char *version;
     char *method;
@@ -29,7 +32,6 @@ typedef struct{
     bool recursion;
     bool verbose;
     bool body;
-    dictlists dict;
 }options;
 
 void fuzzer(options *opts);

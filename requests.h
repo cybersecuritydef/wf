@@ -17,18 +17,22 @@ typedef struct{
     char *postdata;
     headers *header;
     bool verify;
+    bool follow;
     long timeout;
 }request;
 
 typedef struct{
-    long code;
+    size_t code;
     size_t len;
+    double total_time;
     char *content;
-    char *headers;
+    headers *header;
 }response;
 
 response *requests(const request *req);
 
 void free_request(request *req);
+
+void free_response(response *resp);
 
 #endif
