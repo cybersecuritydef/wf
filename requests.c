@@ -45,8 +45,7 @@ response *requests(const request *req){
                     else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
                         curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
                 }
-
-
+                
                 if(req->header)
                     curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
