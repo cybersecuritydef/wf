@@ -48,7 +48,7 @@ response *requests(const request *req){
 
 
                 if(req->header)
-                curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
+                    curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
                 if(req->cookie)
                     curl_easy_setopt(curl, CURLOPT_COOKIE, req->cookie);
@@ -60,9 +60,7 @@ response *requests(const request *req){
                     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
                 curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
-                curl_easy_setopt(curl,  CURLOPT_HEADERDATA, resp);
-                //curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
-
+                curl_easy_setopt(curl,  CURLOPT_HEADERDATA, resp);              
 
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
                 curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
