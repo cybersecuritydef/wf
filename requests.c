@@ -10,32 +10,49 @@
 static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
     response *r = (response*)userdata;
     if(body != NULL){
-        r->content = strdup(body);
-        r->len = strlen(body);
+        r->len += (size * nitems);
+        if(r->content == NULL){
+            printf("%ld\n", r->len);
+            /*if((r->content = (char*)calloc((r->len + 1), sizeof(char))) == NULL)
+                die("[-] Error allocation memory!");
+            strcat(r->content, body);
+            r->content[r->len] = '\0';*/
+        }
+        /*else
+            r->content = (char*)realloc(r->content, (r->len + 1) * sizeof(char));
+        strcat(r->content, body);
+        r->content[r->len] = '\0';*/
     }
     return size * nitems;
 }
 
+
 static size_t get_headers(char *header, size_t size, size_t nitems, void *userdata){
     response *r = (response*)userdata;
-    header[strlen(header) - 2] = '\0';
-    r->header = curl_slist_append(r->header, header);
+    if(header != NULL){
+        header[strlen(header) - 2] = '\0';
+        r->header = curl_slist_append(r->header, header);
+    }
     return size * nitems;
 }
 
 
-response *requests(const request *req){
+int requests(const request *req, response **resp){
     CURL *curl = NULL;
-    response *resp = NULL;
+    CURLcode err = 0;
     if(req != NULL){
         if((curl = curl_easy_init()) != NULL){
-            if((resp = (response*)calloc(1, sizeof(response))) != NULL){
+            if(((*resp) = (response*)calloc(1, sizeof(response))) != NULL){
                 curl_easy_setopt(curl, CURLOPT_URL, req->url);
                 curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
                 curl_easy_setopt(curl, CURLOPT_TIMEOUT, req->timeout);
 
-                if(req->method != NULL)
+                if(req->method != NULL){
+                    if(strcmp(req->method, "HEAD") == 0)
+                        curl_easy_setopt(curl, CURLOPT_NOBODY, true);
                     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, req->method);
+                }
+
 
                 if(req->http_ver != NULL){
                     if(strcmp(req->http_ver, "HTTP/1.0") == 0)
@@ -45,7 +62,7 @@ response *requests(const request *req){
                     else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
                         curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
                 }
-                
+
                 if(req->header)
                     curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
@@ -59,35 +76,33 @@ response *requests(const request *req){
                     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
                 curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
-                curl_easy_setopt(curl,  CURLOPT_HEADERDATA, resp);              
+                curl_easy_setopt(curl,  CURLOPT_HEADERDATA, (*resp));
 
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
-                curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
+                curl_easy_setopt(curl,  CURLOPT_WRITEDATA, (*resp));
 
                 curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, req->verify);
                 curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, req->verify);
 
                 curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, req->follow);
 
-                if(curl_easy_perform(curl) == CURLE_OK){
-                    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
-                    curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
+                if((err = curl_easy_perform(curl)) == CURLE_OK){
+                    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &(*resp)->code);
+                    curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &(*resp)->total_time);
 
                     curl_easy_cleanup(curl);
-                    return resp;
+                    return err;
                 }
                 else{
                     curl_easy_cleanup(curl);
-                    free_response(resp);
+                    free_response((*resp));
+                    return err;
                 }
             }
-            else{
-                curl_easy_cleanup(curl);
-                die("[-] Error allocation memory!");
-            }
+            curl_easy_cleanup(curl);
         }
     }
-    return NULL;
+    return EOF;
 }
 
 
@@ -124,5 +139,7 @@ void free_response(response *resp){
         if(resp->header != NULL)
             curl_slist_free_all(resp->header);
         memset(&resp, '\0', sizeof(resp));
+        free(resp);
+        resp = NULL;
     }
 }

@@ -38,9 +38,6 @@ void help(void){
     printf("\t--hsize=\t\t: Hide response size. Comma seperated lists response sizes [,]\n");
     printf("\t--hcode=\t\t: Hide response code. Comma seperated lists response codes [,]\n");
     printf("\t--hword=\t\t: Hide response word. Comma seperated lists words [,]\n");
-    printf("\t--ssize=\t\t: Show response size. Comma seperated lists response sizes [,]\n");
-    printf("\t--scode=\t\t: Show response code. Comma seperated lists response codes [,]\n");
-    printf("\t--sword=\t\t: Show response word. Comma seperated lists words [,]\n");
     printf("EXAMPLES:\n\t");
     printf("wf -u http://example.com/WF -w wordlist.txt\n");
     printf("\twf -u http://example.com/index.php?page=WF --lfi\n");
@@ -71,12 +68,10 @@ int main(int argc, char **argv){
         {"headers", 1, NULL, 'H'},
         {"version-http", 1, NULL, 'V'},
         {"proxy", 1, NULL, 'p'},
-        {"ssize", 1, NULL, '0'},
-        {"scode", 1, NULL, '1'},
-        {"sword", 1, NULL, '2'},
-        {"hsize", 1, NULL, '3'},
-        {"hcode", 1, NULL, '4'},
-        {"hword", 1, NULL, '5'},
+        {"hsize", 1, NULL, '0'},
+        {"hcode", 1, NULL, '1'},
+        {"hword", 1, NULL, '2'},
+        {"verify", 0, NULL, '3'},
         {NULL, 0, NULL, 0}
     };
     opterr = false;
@@ -125,23 +120,17 @@ int main(int argc, char **argv){
             case 'p' :
                 opts.proxy = optarg;
                 break;
-            case '0' : /* ssize */
-                opts.ssize = optarg;
+            case '0' : /* hsize */
+                opts.filter.hsize = optarg;
                 break;
-            case '1' : /* scode */
-                opts.scode = optarg;
+            case '1' : /* hcode */
+                opts.filter.hcode = optarg;
                 break;
-            case '2' : /* sword */
-                opts.sword = optarg;
+            case '2' : /* hword */
+                opts.filter.hword = optarg;
                 break;
-            case '3' : /* hsize */
-                opts.hsize = optarg;
-                break;
-            case '4' : /* hcode */
-                opts.hcode = optarg;
-                break;
-            case '5' : /* hword */
-                opts.hword = optarg;
+            case '3' : /* verify */
+                opts.verify = true;
                 break;
             case 'h' :
                 help();

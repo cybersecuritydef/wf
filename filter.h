@@ -5,9 +5,8 @@
 
 #include "common.h"
 
+bool number_filter(char *match, const size_t num);
 
-bool filter(char *match, const size_t v);
-
-bool filter_word(char *match, const char *content);
+bool string_filter(char *match, const char *content);
 
 #endif

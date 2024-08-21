@@ -6,13 +6,13 @@
 #include "filter.h"
 
 
-bool filter(char *match, const size_t v){
+bool number_filter(char *match, const size_t num){
     char *delim = NULL;
     char *value = NULL;
     if(match != NULL){
         value = strtok_r(match, ",", &delim);
         while(value != NULL){
-            if(strtol(value, NULL, 10) == v)
+            if(strtol(value, NULL, 10) == num)
                 return true;
             value = strtok_r(NULL, ",", &delim);
         }
@@ -21,7 +21,7 @@ bool filter(char *match, const size_t v){
 }
 
 
-bool filter_word(char *match, const char *content){
+bool string_filter(char *match, const char *content){
     char *delim = NULL;
     char *value = NULL;
     if(match != NULL){

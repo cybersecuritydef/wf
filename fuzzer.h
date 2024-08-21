@@ -9,6 +9,14 @@
 #include "filter.h"
 #include "print.h"
 
+
+typedef struct{
+    char *hcode;
+    char *hsize;
+    char *hword;
+}filters;
+
+
 typedef struct{
     int threads;
     char *wordlist;
@@ -22,16 +30,12 @@ typedef struct{
     char *proxy;
     char *encode;
     char *postdata;
-    char *hcode;
-    char *hsize;
-    char *hword;
-    char *scode;
-    char *ssize;
-    char *sword;
     bool follow;
     bool recursion;
     bool verbose;
+    bool verify;
     bool body;
+    filters filter;
 }options;
 
 void fuzzer(options *opts);
