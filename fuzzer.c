@@ -13,7 +13,7 @@ static void print(const char *url, const filters *filter, const response *resp, 
     }
 }
 
-void fuzzer(options *opts){
+void fuzzer(const options *opts){
     request req;
     response resp;
     int err = 0;
