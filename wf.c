@@ -120,13 +120,13 @@ int main(int argc, char **argv){
             case 'p' :
                 opts.proxy = optarg;
                 break;
-            case '0' : /* hsize */
+            case '0' : /* hide size */
                 opts.filter.hsize = optarg;
                 break;
-            case '1' : /* hcode */
+            case '1' : /* hide code */
                 opts.filter.hcode = optarg;
                 break;
-            case '2' : /* hword */
+            case '2' : /* hide word */
                 opts.filter.hword = optarg;
                 break;
             case '3' : /* verify */
