@@ -61,16 +61,16 @@ int requests(const request *req, response *resp){
                      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
             }
 
-            if(req->header)
+            if(req->header != NULL)
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
-            if(req->cookie)
+            if(req->cookie != NULL)
                 curl_easy_setopt(curl, CURLOPT_COOKIE, req->cookie);
 
-            if(req->proxy)
+            if(req->proxy != NULL)
                 curl_easy_setopt(curl, CURLOPT_PROXY, req->proxy);
 
-            if(req->postdata)
+            if(req->postdata != NULL)
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
             curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
