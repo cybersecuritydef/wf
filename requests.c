@@ -37,67 +37,62 @@ static size_t get_headers(char *header, size_t size, size_t nitems, void *userda
 }
 
 
-int requests(const request *req, response **resp){
+int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
     if(req != NULL){
-        if((curl = curl_easy_init()) != NULL){
-            if(((*resp) = (response*)calloc(1, sizeof(response))) != NULL){
-                curl_easy_setopt(curl, CURLOPT_URL, req->url);
-                curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
-                curl_easy_setopt(curl, CURLOPT_TIMEOUT, req->timeout);
+        if((curl = curl_easy_init()) != NULL){            
+            curl_easy_setopt(curl, CURLOPT_URL, req->url);
+            curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
+            curl_easy_setopt(curl, CURLOPT_TIMEOUT, req->timeout);
 
-                if(req->method != NULL){
-                    if(strcmp(req->method, "HEAD") == 0)
-                        curl_easy_setopt(curl, CURLOPT_NOBODY, true);
-                    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, req->method);
-                }
+            if(req->method != NULL){
+                if(strcmp(req->method, "HEAD") == 0)
+                    curl_easy_setopt(curl, CURLOPT_NOBODY, true);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, req->method);
+            }
 
+            if(req->http_ver != NULL){
+                if(strcmp(req->http_ver, "HTTP/1.0") == 0)
+                    curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+                else if(strcmp(req->http_ver, "HTTP/1.1") == 0)
+                    curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
+                     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+            }
 
-                if(req->http_ver != NULL){
-                    if(strcmp(req->http_ver, "HTTP/1.0") == 0)
-                        curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-                    else if(strcmp(req->http_ver, "HTTP/1.1") == 0)
-                        curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                    else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
-                        curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
-                }
+            if(req->header)
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
-                if(req->header)
-                    curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
+            if(req->cookie)
+                curl_easy_setopt(curl, CURLOPT_COOKIE, req->cookie);
 
-                if(req->cookie)
-                    curl_easy_setopt(curl, CURLOPT_COOKIE, req->cookie);
+            if(req->proxy)
+                curl_easy_setopt(curl, CURLOPT_PROXY, req->proxy);
 
-                if(req->proxy)
-                    curl_easy_setopt(curl, CURLOPT_PROXY, req->proxy);
+            if(req->postdata)
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
-                if(req->postdata)
-                    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
+            curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
+            curl_easy_setopt(curl,  CURLOPT_HEADERDATA, resp);
 
-                curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
-                curl_easy_setopt(curl,  CURLOPT_HEADERDATA, (*resp));
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
+            curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
 
-                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
-                curl_easy_setopt(curl,  CURLOPT_WRITEDATA, (*resp));
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, req->verify);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, req->verify);
 
-                curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, req->verify);
-                curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, req->verify);
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, req->follow);
 
-                curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, req->follow);
-
-                if((err = curl_easy_perform(curl)) == CURLE_OK){
-                    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &(*resp)->code);
-                    curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &(*resp)->total_time);
-
-                    curl_easy_cleanup(curl);
-                    return err;
-                }
-                else{
-                    curl_easy_cleanup(curl);
-                    free_response((*resp));
-                    return err;
-                }
+            if((err = curl_easy_perform(curl)) == CURLE_OK){
+                curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
+                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
+                curl_easy_cleanup(curl);
+                return err;
+            }
+            else{
+                curl_easy_cleanup(curl);                    
+                return err;
             }
             curl_easy_cleanup(curl);
         }
@@ -139,7 +134,5 @@ void free_response(response *resp){
         if(resp->header != NULL)
             curl_slist_free_all(resp->header);
         memset(&resp, '\0', sizeof(resp));
-        free(resp);
-        resp = NULL;
     }
 }
