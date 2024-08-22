@@ -31,8 +31,8 @@ typedef struct{
 
 int requests(const request *req, response **resp);
 
-void free_request(request *req);
+void clear_request(request *req);
 
-void free_response(response *resp);
+void clear_response(response *resp);
 
 #endif
