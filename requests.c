@@ -100,7 +100,7 @@ int requests(const request *req, response *resp){
 }
 
 
-void free_request(request *req){
+void clear_request(request *req){
     if(req != NULL){
         if(req->method != NULL)
             free(req->method);
@@ -126,7 +126,7 @@ void free_request(request *req){
 }
 
 
-void free_response(response *resp){
+void clear_response(response *resp){
     if(resp != NULL){
         if(resp->content != NULL)
             free(resp->content);
