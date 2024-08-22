@@ -40,7 +40,7 @@ static size_t get_headers(char *header, size_t size, size_t nitems, void *userda
 int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
-    if(req != NULL){
+    if(req != NULL && resp != NULL){
         if((curl = curl_easy_init()) != NULL){            
             curl_easy_setopt(curl, CURLOPT_URL, req->url);
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
