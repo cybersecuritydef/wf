@@ -44,6 +44,6 @@ void fuzzer(const options *opts){
         if(opts->verbose)
             print(req.url, &opts->filter, &resp, opts->body);
     }
-    free_request(&req);
-    free_response(&resp);
+    clear_request(&req);
+    clear_response(&resp);
 }
