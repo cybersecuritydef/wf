@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #include "fuzzer.h"
+#include "print.h"
 
 void fuzzer(const options *opts){
     request req;
@@ -44,6 +45,8 @@ void fuzzer(const options *opts){
         if(opts->verbose)
             print(req.url, &opts->filter, &resp, opts->body);
     }
+    else
+        printf("%s\n", curl_easy_strerror(err));
     clear_request(&req);
     clear_response(&resp);
 }

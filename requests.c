@@ -12,16 +12,19 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
     if(body != NULL){
         r->len += (size * nitems);
         if(r->content == NULL){
-            printf("%ld\n", r->len);
-            /*if((r->content = (char*)calloc((r->len + 1), sizeof(char))) == NULL)
+            if((r->content = (char*)calloc(r->len + 1, sizeof(char))) != NULL){
+                memcpy(r->content, body, (size * nitems));
+                r->content[r->len] = '\0';
+            }
+            else
                 die("[-] Error allocation memory!");
-            strcat(r->content, body);
-            r->content[r->len] = '\0';*/
         }
-        /*else
-            r->content = (char*)realloc(r->content, (r->len + 1) * sizeof(char));
-        strcat(r->content, body);
-        r->content[r->len] = '\0';*/
+        else if((r->content = (char*)realloc(r->content, (r->len + 1) * sizeof(char))) != NULL){
+            strncat(r->content, body, (size * nitems));
+            r->content[r->len] = '\0';
+        }
+        else
+            die("[-] Error allocation memory!");
     }
     return size * nitems;
 }
@@ -41,7 +44,7 @@ int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
     if(req != NULL && resp != NULL){
-        if((curl = curl_easy_init()) != NULL){            
+        if((curl = curl_easy_init()) != NULL){
             curl_easy_setopt(curl, CURLOPT_URL, req->url);
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, req->timeout);
@@ -91,7 +94,7 @@ int requests(const request *req, response *resp){
                 return err;
             }
             else{
-                curl_easy_cleanup(curl);                    
+                curl_easy_cleanup(curl);
                 return err;
             }
         }

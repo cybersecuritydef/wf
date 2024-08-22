@@ -29,7 +29,7 @@ typedef struct{
     headers *header;
 }response;
 
-int requests(const request *req, response **resp);
+int requests(const request *req, response *resp);
 
 void clear_request(request *req);
 

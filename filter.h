@@ -1,5 +1,5 @@
-#ifndef __LFI_H__
-#define __LFI_H__
+#ifndef __FILTER_H__
+#define __FILTER_H__
 
 #include <stdbool.h>
 
