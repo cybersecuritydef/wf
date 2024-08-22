@@ -38,6 +38,6 @@ typedef struct{
     filters filter;
 }options;
 
-void fuzzer(options *opts);
+void fuzzer(const options *opts);
 
 #endif
