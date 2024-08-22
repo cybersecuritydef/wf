@@ -5,7 +5,7 @@
 
 #include "fuzzer.h"
 
-static void print(const char *url, filters *filter, const response *resp, bool body){
+static void print(const char *url, const filters *filter, const response *resp, const bool body){
     if((! number_filter(filter->hcode, resp->code)) && (! number_filter(filter->hsize, resp->len)) && (! string_filter(filter->hword, resp->content))){
         printf("%s [code: %ld size: %ld time: %.1f]\n", url, resp->code,resp->len, resp->total_time);
         if(body && resp->content != NULL)
@@ -15,9 +15,10 @@ static void print(const char *url, filters *filter, const response *resp, bool b
 
 void fuzzer(options *opts){
     request req;
-    response *resp = NULL;
+    response resp;
     int err = 0;
     memset(&req, '\0', sizeof(req));
+    memset(&resp, '\0', sizeof(resp));
 
     /* preparing a request */
     if(opts->url != NULL)
@@ -49,8 +50,8 @@ void fuzzer(options *opts){
     /* output */
     if(err == 0){
         if(opts->verbose)
-            print(req.url, &opts->filter, resp, opts->body);
+            print(req.url, &opts->filter, &resp, opts->body);
     }
     free_request(&req);
-    free_response(resp);
+    free_response(&resp);
 }
