@@ -94,7 +94,6 @@ int requests(const request *req, response *resp){
                 curl_easy_cleanup(curl);                    
                 return err;
             }
-            curl_easy_cleanup(curl);
         }
     }
     return EOF;
