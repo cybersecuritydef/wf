@@ -47,7 +47,7 @@ void fuzzer(const options *opts){
     if(opts->extlist != NULL){
         if((exts = read_wordlists(opts->extlist)) == NULL){
             clear_request(&req);
-            free_wordlists(&words);
+            clear_wordlists(&words);
             die("[-] File not found!");  
         }
     }    
