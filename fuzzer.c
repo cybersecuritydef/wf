@@ -37,7 +37,7 @@ void fuzzer(const options *opts){
     req.header = curl_slist_append(req.header, "Accept-Encoding: *");
 
    /* make payloads */
-    if((payloads = make_payloads(url, opts->wordlist, opts->extlist)) == NULL){
+    if((payloads = make_payloads(opts->url, opts->wordlist, opts->extlist)) == NULL){
         clear_request(&req);
         die("[-] Error make payloads!");
     }
