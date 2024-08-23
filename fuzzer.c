@@ -9,6 +9,8 @@
 void fuzzer(const options *opts){
     request req;
     response resp;
+    wordlists *words = NULL;
+    extlists *exts = NULL;
     int err = 0;
     memset(&req, '\0', sizeof(req));
     memset(&resp, '\0', sizeof(resp));
