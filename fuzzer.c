@@ -41,11 +41,15 @@ void fuzzer(const options *opts){
     
     if(opts->extlist != NULL)
         printf("Read extlists\n");
+
+    /*
+        make payloads
+        payloads_list = make_payloads(url, wordlist, extlist);
+    */
     
     /* running request */
     err = requests(&req, &resp);
-
-    /* make payloads */
+    
     /* output */
     if(err == 0){
         if(opts->verbose)
