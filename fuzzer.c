@@ -51,7 +51,12 @@ void fuzzer(const options *opts){
             die("[-] File not found!");  
         }
     }    
-    /* payloads_list = make_payloads(url, wordlist, extlist); */
+    if((payloads = make_payloads(url, words, exts)) == NULL){
+        clear_request(&req);
+        clear_wordlists(&words);
+        clear_wordlists(&exts);
+        die("[-] File not found!");
+    }
 
     
     /* running request */
