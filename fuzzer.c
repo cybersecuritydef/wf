@@ -39,19 +39,6 @@ void fuzzer(const options *opts){
     req.header = curl_slist_append(req.header, "Accept-Encoding: *");
 
    /* make payloads */
-    if((words = read_wordlists(opts->wordlist)) == NULL){
-        clear_request(&req);
-        die("[-] File not found!");   
-    }            
-
-    if(opts->extlist != NULL){
-        if((exts = read_wordlists(opts->extlist)) == NULL){
-            clear_request(&req);
-            clear_wordlists(&words);
-            die("[-] File not found!");  
-        }
-    }
-    
     if((payloads = make_payloads(url, words, exts)) == NULL){
         clear_request(&req);
         clear_wordlists(&words);
