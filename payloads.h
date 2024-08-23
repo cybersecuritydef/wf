@@ -6,6 +6,6 @@ typedef struct{
     size_t count;
 }payloads;
 
-payloads *make_payloads(const char *url, wordlists *words, extlists *exts);
+payloads *make_payloads(const char *url, const char *wordlist, const char *extlist);
 
 #endif
