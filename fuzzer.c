@@ -14,9 +14,6 @@ void fuzzer(const options *opts){
     memset(&resp, '\0', sizeof(resp));
 
     /* preparing a request */
-    if(opts->url != NULL)
-        req.url = strdup(opts->url);
-
     if(opts->method != NULL)
         req.method = strdup(opts->method);
 
