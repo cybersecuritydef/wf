@@ -50,7 +50,8 @@ void fuzzer(const options *opts){
             clear_wordlists(&words);
             die("[-] File not found!");  
         }
-    }    
+    }
+    
     if((payloads = make_payloads(url, words, exts)) == NULL){
         clear_request(&req);
         clear_wordlists(&words);
