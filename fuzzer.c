@@ -39,10 +39,10 @@ void fuzzer(const options *opts){
     req.header = curl_slist_append(req.header, "Accept-Encoding: *");
 
     if(opts->wordlist != NULL)
-        printf("Read wordlists\n");
+        words = read_wordlists(opts->wordlist);
     
     if(opts->extlist != NULL)
-        printf("Read extlists\n");
+        exts = read_wordlists(opts->extlist);
 
     /*
         make payloads
