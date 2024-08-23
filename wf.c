@@ -80,6 +80,7 @@ int main(int argc, char **argv){
     while((opt = getopt_long(argc, argv, shortopts, longopts, &index_opt)) != EOF){
         switch(opt){
             case 'w' :
+                opts.wordlist = optarg;
                 break;
             case 'v' :
                 opts.verbose = true;
