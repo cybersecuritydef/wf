@@ -132,7 +132,7 @@ void b16decode(const char *inbuf, const size_t inlen, void *outbuf, const size_t
 /*void md5(const char *inbuf, const size_t inlen, char *outbuf){
     MD5_CTX ctx_md5;
     unsigned char hash[MD5_DIGEST_LENGTH] = {'\0'};
-    if(inbuf && outbuf && inlen > 0){
+    if(inbuf != NULL && outbuf != NULL && inlen > 0){
         MD5_Init(&ctx_md5);
         MD5_Update(&ctx_md5, inbuf, inlen);
         MD5_Final(hash, &ctx_md5);
@@ -144,7 +144,7 @@ void b16decode(const char *inbuf, const size_t inlen, void *outbuf, const size_t
 void sha1(const char *inbuf, const size_t inlen, char *outbuf){
     SHA_CTX ctx_sha1;
     unsigned char hash[SHA_DIGEST_LENGTH] = {'\0'};
-    if(inbuf && outbuf && inlen > 0){
+    if(inbuf != NULL && outbuf != NULL && inlen > 0){
         SHA1_Init(&ctx_sha1);
         SHA1_Update(&ctx_sha1, inbuf, inlen);
         SHA1_Final(hash, &ctx_sha1);
@@ -156,7 +156,7 @@ void sha1(const char *inbuf, const size_t inlen, char *outbuf){
 void sha256(const char *inbuf, const size_t inlen, char *outbuf){
     SHA256_CTX ctx_sha256;
     unsigned char hash[SHA256_DIGEST_LENGTH] = {'\0'};
-    if(inbuf && outbuf && inlen > 0){
+    if(inbuf != NULL && outbuf != NULL && inlen > 0){
         SHA256_Init(&ctx_sha256);
         SHA256_Update(&ctx_sha256, inbuf, inlen);
         SHA256_Final(hash, &ctx_sha256);
@@ -167,7 +167,7 @@ void sha256(const char *inbuf, const size_t inlen, char *outbuf){
 void sha512(const char *inbuf, const size_t inlen, char *outbuf){
     SHA512_CTX ctx_sha512;
     unsigned char hash[SHA512_DIGEST_LENGTH] = {'\0'};
-    if(inbuf && outbuf && inlen > 0){
+    if(inbuf != NULL && outbuf != NULL && inlen > 0){
         SHA512_Init(&ctx_sha512);
         SHA512_Update(&ctx_sha512, inbuf, inlen);
         SHA512_Final(hash, &ctx_sha512);
