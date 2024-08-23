@@ -36,7 +36,12 @@ void fuzzer(const options *opts){
     req.header = curl_slist_append(req.header, "Accept-Language: *");
     req.header = curl_slist_append(req.header, "Accept-Encoding: *");
 
-
+    if(opts->wordlist != NULL)
+        printf("Read wordlists\n");
+    
+    if(opts->extlist != NULL)
+        printf("Read extlists");
+    
     /* running request */
     err = requests(&req, &resp);
 
