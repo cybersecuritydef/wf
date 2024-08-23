@@ -19,6 +19,7 @@ void banner(void){
 void help(void){
     printf("OPTIONS:\n");
     printf("\t-w\t--wordlists=\t: Wordlists files\n");
+    printf("\t-E\t--ext=\t: Wordlists files extentions\n");
     printf("\t-v\t--verbose\t: Verbose information\n");
     printf("\t-h\t--help\t\t: Using help\n");
     printf("\t-t\t\t\t: Numbers threads  (default: 20)\n\n\n");
@@ -52,10 +53,11 @@ void help(void){
 int main(int argc, char **argv){
     int opt = 0;
     int index_opt = 0;
-    char shortopts[] = "w:vt:fu:rd:e:c:H:V:p:m:t:bh";
+    char shortopts[] = "w:vt:fu:rd:e:E:c:H:V:p:m:t:bh";
     options opts;
     struct option longopts[] = {
         {"wordlist", 1, NULL, 'w'},
+        {"ext", 1, NULL, 'E'},
         {"verbose", 0, NULL, 'v'},
         {"help", 0, NULL, 'h'},
         {"follow", 0, NULL, 'f'},
