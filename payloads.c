@@ -18,9 +18,12 @@ payloads *make_payloads(const char *url, const char *wordlist, const char *extli
       return NULL;
   
     if(extlist != NULL){
-      if(exts = read_wordlists(extlist) == NULL)
-        return NULL;
+      if(exts = read_wordlists(extlist) == NULL){
+          clear_wordlists(&words);
+          return NULL;
+      }        
     }
-    
+    clear_wordlists(&words);
+    clear_wordlists(&exts);
     return payload;
 }
