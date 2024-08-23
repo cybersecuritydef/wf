@@ -4,7 +4,6 @@
 
 #include "payloads.h"
 #include "common.h"
-#include "list.h"
 
 payloads *make_payloads(const char *url, wordlists *words, extlists *exts){
   
