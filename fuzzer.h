@@ -21,7 +21,6 @@ typedef struct{
     int threads;
     char *wordlist;
     char *extlist;
-    char *ext;
     char *headers;
     char *version;
     char *method;
