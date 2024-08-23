@@ -41,8 +41,6 @@ void fuzzer(const options *opts){
    /* make payloads */
     if((payloads = make_payloads(url, words, exts)) == NULL){
         clear_request(&req);
-        clear_wordlists(&words);
-        clear_wordlists(&exts);
         die("[-] Error make payloads!");
     }
 
