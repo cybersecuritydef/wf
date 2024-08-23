@@ -19,7 +19,7 @@ void banner(void){
 void help(void){
     printf("OPTIONS:\n");
     printf("\t-w\t--wordlists=\t: Wordlists files\n");
-    printf("\t-E\t--ext=\t: Wordlists files extentions\n");
+    printf("\t-E\t--ext=\t: Wordlists files extensions\n");
     printf("\t-v\t--verbose\t: Verbose information\n");
     printf("\t-h\t--help\t\t: Using help\n");
     printf("\t-t\t\t\t: Numbers threads  (default: 20)\n\n\n");
