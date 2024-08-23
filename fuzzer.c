@@ -40,11 +40,12 @@ void fuzzer(const options *opts){
         printf("Read wordlists\n");
     
     if(opts->extlist != NULL)
-        printf("Read extlists");
+        printf("Read extlists\n");
     
     /* running request */
     err = requests(&req, &resp);
 
+    /* make payloads */
     /* output */
     if(err == 0){
         if(opts->verbose)
