@@ -38,16 +38,14 @@ void fuzzer(const options *opts){
     req.header = curl_slist_append(req.header, "Accept-Language: *");
     req.header = curl_slist_append(req.header, "Accept-Encoding: *");
 
+   /* make payloads */
     if(opts->wordlist != NULL)
         words = read_wordlists(opts->wordlist);
     
     if(opts->extlist != NULL)
         exts = read_wordlists(opts->extlist);
+    /* payloads_list = make_payloads(url, wordlist, extlist); */
 
-    /*
-        make payloads
-        payloads_list = make_payloads(url, wordlist, extlist);
-    */
     
     /* running request */
     err = requests(&req, &resp);
