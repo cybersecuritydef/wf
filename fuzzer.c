@@ -55,7 +55,7 @@ void fuzzer(const options *opts){
         clear_request(&req);
         clear_wordlists(&words);
         clear_wordlists(&exts);
-        die("[-] File not found!");
+        die("[-] Error make payloads!");
     }
 
     
