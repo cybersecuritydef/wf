@@ -37,6 +37,7 @@ wordlists *read_wordlists(const char *filename){
 
 
 void clear_wordlists(wordlists *word){
-    free_list(&word->words);
+    if(word != NULL)
+        free_list(&word->words);
     word->count = 0;
 }
