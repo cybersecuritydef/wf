@@ -15,6 +15,6 @@ typedef struct{
 
 wordlists *read_wordlists(const char *filename);
 
-void free_wordlists(wordlists *word);
+void clear_wordlists(wordlists *word);
 
 #endif
