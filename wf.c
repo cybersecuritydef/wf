@@ -84,6 +84,9 @@ int main(int argc, char **argv){
             case 'w' :
                 opts.wordlist = optarg;
                 break;
+            case 'E' :
+                opts.wordlist = optarg;
+                break;
             case 'v' :
                 opts.verbose = true;
                 break;
