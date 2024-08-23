@@ -7,7 +7,7 @@
 #include "common.h"
 
 
-void add_wordlists(wordlists *word, const char *value){
+static void add_wordlists(wordlists *word, const char *value){
     word->words = add_first(word->words, value);
     word->count++;
 }
