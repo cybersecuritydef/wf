@@ -8,6 +8,11 @@ typedef struct{
     size_t count;
 }wordlists;
 
+typedef struct{
+    struct list *ext;
+    size_t count;
+}extlists;
+
 wordlists *read_wordlists(const char *filename);
 
 void free_wordlists(wordlists *word);
