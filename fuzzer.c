@@ -46,9 +46,8 @@ void fuzzer(const options *opts){
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
     if(opts->extlist != NULL)
-        printf("[!] Extensions: %s\n\n", opts->extlist);
-    else
-        printf("\n");
+        printf("[!] Extensions: %s\n", opts->extlist);
+    printf("\n");
 
     /* make payloads */
     printf("[!] Generating wordlists...\n");
