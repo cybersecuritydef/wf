@@ -38,7 +38,7 @@ struct list *add_last(struct list *ls, const char *value){
     struct list *newls = NULL;
     struct list *last = NULL;
     if(ls != NULL){
-        if((newls = (struct list*)malloc(sizeof(struct list))) != NULL){
+        if((newls = (struct list*)calloc(1, sizeof(struct list))) != NULL){
             newls->data = strdup(value);
             newls->next = NULL;
             last = last_list(ls);
