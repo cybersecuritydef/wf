@@ -42,7 +42,7 @@ void fuzzer(const options *opts){
 
     start = time(NULL);
     tm_start = localtime(&start);
-    printf("[!] Start time: %d:%d:%d\n", tm_start->tm_hour, tm_start->tm_min, tm_start->tm_sec);
+    printf("[!] Start time: %02d:%02d:%02d\n", tm_start->tm_hour, tm_start->tm_min, tm_start->tm_sec);
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
     if(opts->extlist != NULL)
