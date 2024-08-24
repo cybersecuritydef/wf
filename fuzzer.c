@@ -47,10 +47,9 @@ void fuzzer(const options *opts){
     printf("[!] Wordlist: %s\n", opts->wordlist);
     if(opts->extlist != NULL)
         printf("[!] Extensions: %s\n", opts->extlist);
-    printf("\n");
 
     /* make payloads */
-    printf("[!] Generating wordlists...\n");
+    printf("\n[!] Generating wordlists...\n");
     if(make_payloads(opts->url, opts->wordlist, opts->extlist, &payload) == EOF){
         clear_request(&req);
         die("[-] Error make payloads!");
