@@ -10,11 +10,9 @@
 char *strrep(const char *str, const char *oldstr, const char *newstr){
     char *nstr = NULL;
     char *tmp = NULL;
-    size_t len = 0;
     if(str != NULL && oldstr != NULL && newstr != NULL){
-        len = (strlen(str) - strlen(oldstr)) + strlen(newstr);
         if((tmp = strstr(str, oldstr)) != NULL){
-            if((nstr = (char*)calloc(len + 1, sizeof(char))) != NULL){
+            if((nstr = (char*)calloc(((strlen(str) - strlen(oldstr)) + strlen(newstr)) + 1, sizeof(char))) != NULL){
                 strncat(nstr, str, tmp - str);
                 strcat(nstr, newstr);
                 strcat(nstr, (tmp + strlen(oldstr)));
