@@ -12,7 +12,12 @@ void fuzzer(const options *opts){
     response resp;
     payloads payload;
     struct list *cur = NULL;
+    struct tm *tm_start = NULL;
+    struct tm *tm_finish = NULL;
+    time_t start = 0;
+    time_t finish = 0;
     int err = 0;
+
     memset(&req, '\0', sizeof(req));
     memset(&resp, '\0', sizeof(resp));
     memset(&payload, '\0', sizeof(payload));
@@ -35,12 +40,24 @@ void fuzzer(const options *opts){
 
     req.header = add_headers(req.header, opts->headers);
 
-   /* make payloads */
+    start = time(NULL);
+    tm_start = localtime(&start);
+    printf("[!] Start time: %d:%d:%d\n", tm_start->tm_hour, tm_start->tm_min, tm_start->tm_sec);
+    printf("[!] URL: %s\n", opts->url);
+    printf("[!] Wordlist: %s\n", opts->wordlist);
+    if(opts->extlist != NULL)
+        printf("[!] Extensions: %s\n\n", opts->extlist);
+    else
+        printf("\n");
+
+    /* make payloads */
+    printf("[!] Generating wordlists...\n");
     if(make_payloads(opts->url, opts->wordlist, opts->extlist, &payload) == EOF){
         clear_request(&req);
         die("[-] Error make payloads!");
     }
 
+    printf("[!] Wordlist count: %ld\n\n", payload.count);
     cur = payload.payload;
     while(cur != NULL){
         req.url = strdup(cur->data);
@@ -59,8 +76,10 @@ void fuzzer(const options *opts){
 
         cur = cur->next;
     }
-
     free_list(&payload.payload);
     clear_request(&req);
 
+    finish = time(NULL);
+    tm_finish = localtime(&finish);
+    printf("\n[!] Finish time: %02d:%02d:%02d\n", tm_finish->tm_hour, tm_finish->tm_min, tm_finish->tm_sec);
 }

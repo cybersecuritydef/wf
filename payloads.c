@@ -1,7 +1,9 @@
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "payloads.h"
 
@@ -11,6 +13,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     FILE *fword = NULL;
     char buf[LEN_BUF] = {'\0'};
     char *p = NULL;
+    int status = 0;
     if((fword = fopen(wordlist, "r")) != NULL){
         while(fgets(buf, sizeof(buf), fword) != NULL){
             buf[strlen(buf) - 1] = '\0';
@@ -22,7 +25,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
         fclose(fword);
     }
     else
-        return EOF;
+        status = EOF;
 
-    return 0;
+    return status;
 }

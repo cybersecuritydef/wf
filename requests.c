@@ -20,18 +20,17 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
         else{
             len = strlen(r->content);
             if((r->content = (char*)realloc(r->content, (r->len + len + 1) * sizeof(char))) == NULL)
-                
                 die("[-] Error allocation memory!");
         }
         memcpy(r->content + len, body, r->len);
-        r->content[strlen(r->content)] = '\0';
+        r->content[r->len + len] = '\0';
     }
     return (size * nitems);
 }
 
 
 static size_t get_headers(char *header, size_t size, size_t nitems, void *userdata){
-    response *r = (response*)userdata;
+    //response *r = (response*)userdata;
     /*if(header != NULL){
         header[strlen(header) - 2] = '\0';
         r->header = curl_slist_append(r->header, header);

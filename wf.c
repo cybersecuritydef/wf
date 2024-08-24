@@ -150,7 +150,7 @@ int main(int argc, char **argv){
         help();
         return 0;
     }
-
+    banner();
     fuzzer(&opts);
 
     return 0;
