@@ -14,11 +14,7 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
     if(body != NULL){
         r->len = (size * nitems);
         if(r->content == NULL){
-            if((r->content = (char*)calloc(r->len + 1, sizeof(char))) != NULL){
-                memcpy(r->content, body, r->len);
-                r->content[r->len] = '\0';
-            }
-            else
+            if((r->content = (char*)calloc((r->len + len + 1), sizeof(char))) == NULL)
                 die("[-] Error allocation memory!");
         }
         else{
