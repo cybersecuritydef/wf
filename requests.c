@@ -26,7 +26,7 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
         memcpy(r->content + len, body, r->len);
         r->content[strlen(r->content)] = '\0';
     }
-    return size * nitems;
+    return (size * nitems);
 }
 
 
