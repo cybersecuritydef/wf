@@ -164,7 +164,6 @@ void clear_request(request *req){
             curl_slist_free_all(req->header);
             req->header = NULL;
         }
-        req = NULL;
     }
 }
 
@@ -180,6 +179,5 @@ void clear_response(response *resp){
             curl_slist_free_all(resp->header);
             resp->header = NULL;
         }
-        resp = NULL;
     }
 }
