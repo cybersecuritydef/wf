@@ -1,11 +1,8 @@
 #ifndef __PAYLOADS_H__
 #define __PAYLOADS_H__
 
-typedef struct{
-    struct list *payload;
-    size_t count;
-}payloads;
+#include "wordlists.h"
 
-payloads *make_payloads(const char *url, const char *wordlist, const char *extlist);
+int make_payloads(const char *url, const char *wordlist, const char *extlist, wordlists *payloads);
 
 #endif

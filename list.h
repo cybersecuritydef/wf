@@ -6,11 +6,8 @@ struct list{
     struct list *next;
 };
 
-struct list *first_list(struct list *ls);
 
 struct list *last_list(struct list *ls);
-
-struct list *find_list(struct list *ls, const char *value);
 
 struct list *add_first(struct list *ls, const char *value);
 

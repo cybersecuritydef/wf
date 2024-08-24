@@ -5,26 +5,32 @@
 #include <errno.h>
 
 #include "requests.h"
+#include "errors.h"
 
 
 static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
     response *r = (response*)userdata;
+    size_t len = 0;
     if(body != NULL){
-        r->len += (size * nitems);
+        r->len = (size * nitems);
         if(r->content == NULL){
             if((r->content = (char*)calloc(r->len + 1, sizeof(char))) != NULL){
-                memcpy(r->content, body, (size * nitems));
+                memcpy(r->content, body, r->len);
                 r->content[r->len] = '\0';
             }
             else
                 die("[-] Error allocation memory!");
         }
-        else if((r->content = (char*)realloc(r->content, (r->len + 1) * sizeof(char))) != NULL){
-            strncat(r->content, body, (size * nitems));
-            r->content[r->len] = '\0';
+        else{
+            len = strlen(r->content);
+            if((r->content = (char*)realloc(r->content, (r->len + len + 1) * sizeof(char))) != NULL){
+                strncat(r->content + len, body, r->len);
+                r->content[strlen(r->content)] = '\0';
+            }
+            else
+                die("[-] Error allocation memory!");
         }
-        else
-            die("[-] Error allocation memory!");
+
     }
     return size * nitems;
 }
@@ -32,10 +38,10 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
 
 static size_t get_headers(char *header, size_t size, size_t nitems, void *userdata){
     response *r = (response*)userdata;
-    if(header != NULL){
+    /*if(header != NULL){
         header[strlen(header) - 2] = '\0';
         r->header = curl_slist_append(r->header, header);
-    }
+    }*/
     return size * nitems;
 }
 
@@ -102,39 +108,84 @@ int requests(const request *req, response *resp){
     return EOF;
 }
 
+headers *add_headers(headers *h, char *header){
+    char *delim = NULL;
+    char *value = NULL;
+
+    /* default headers */
+    h = curl_slist_append(h, "User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20100101 Firefox/8.0");
+    h = curl_slist_append(h, "Accept-Language: *");
+    h = curl_slist_append(h, "Accept-Encoding: *");
+
+    if(header != NULL){
+        value = strtok_r(header, ",", &delim);
+        while(value != NULL){
+            h = curl_slist_append(h, value);
+            value = strtok_r(NULL, ",", &delim);
+        }
+    }
+
+    return h;
+}
 
 void clear_request(request *req){
     if(req != NULL){
-        if(req->method != NULL)
+        if(req->method != NULL){
             free(req->method);
+            req->method = NULL;
+        }
 
-        if(req->url != NULL)
+
+        if(req->url != NULL){
             free(req->url);
+            req->url = NULL;
+        }
 
-        if(req->http_ver != NULL)
+
+        if(req->http_ver != NULL){
             free(req->http_ver);
+            req->http_ver = NULL;
+        }
 
-        if(req->cookie != NULL)
+
+        if(req->cookie != NULL){
             free(req->cookie);
+            req->cookie = NULL;
+        }
 
-        if(req->postdata != NULL)
+
+        if(req->postdata != NULL){
             free(req->postdata);
+            req->postdata = NULL;
+        }
 
-        if(req->proxy != NULL)
+
+        if(req->proxy != NULL){
             free(req->proxy);
-        if(req->header != NULL)
+            req->proxy = NULL;
+        }
+
+
+        if(req->header != NULL){
             curl_slist_free_all(req->header);
-        memset(&req, '\0', sizeof(req));
+            req->header = NULL;
+        }
+        req = NULL;
     }
 }
 
 
 void clear_response(response *resp){
     if(resp != NULL){
-        if(resp->content != NULL)
+        if(resp->content != NULL){
             free(resp->content);
-        if(resp->header != NULL)
+            resp->content = NULL;
+        }
+
+        if(resp->header != NULL){
             curl_slist_free_all(resp->header);
-        memset(&resp, '\0', sizeof(resp));
+            resp->header = NULL;
+        }
+        resp = NULL;
     }
 }

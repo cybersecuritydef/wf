@@ -4,7 +4,8 @@
 #include <ctype.h>
 
 #include "wordlists.h"
-#include "common.h"
+#include "errors.h"
+
 
 
 static void add_wordlists(wordlists *word, const char *value){
@@ -17,9 +18,7 @@ wordlists *read_wordlists(const char *filename){
     wordlists *word = NULL;
     char buf[LEN_BUF] = {'\0'};
     if((file = fopen(filename, "r")) != NULL){
-        if((word = (wordlists*)malloc(sizeof(wordlists))) != NULL){
-            word->count = 0;
-            word->words = NULL;
+        if((word = (wordlists*)calloc(1, sizeof(wordlists))) != NULL){
             while(fgets(buf, sizeof(buf), file) != NULL){
                 buf[strlen(buf) - 1] = '\0';
                 add_wordlists(word, buf);
@@ -37,7 +36,9 @@ wordlists *read_wordlists(const char *filename){
 
 
 void clear_wordlists(wordlists *word){
-    if(word != NULL)
+    if(word != NULL){
         free_list(&word->words);
-    word->count = 0;
+        word->words = NULL;
+        word->count = 0;
+    }
 }

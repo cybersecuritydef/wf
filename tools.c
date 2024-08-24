@@ -3,13 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "common.h"
+#include "tools.h"
 
-
-void die(const char *msg){
-    fprintf(stderr, "%s\n", msg);
-    exit(EOF);
-}
 
 
 char *strrep(const char *str, const char *oldstr, const char *newstr){

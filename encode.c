@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "common.h"
 #include "encode.h"
 
 static const char B64TABLE[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

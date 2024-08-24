@@ -1,12 +1,12 @@
 #ifndef __FUZZER_H__
 #define __FUZZER_H__
 
-#include "common.h"
 #include "wordlists.h"
-#include "headers.h"
 #include "requests.h"
 #include "encode.h"
 #include "filter.h"
+#include "payloads.h"
+#include "errors.h"
 
 
 

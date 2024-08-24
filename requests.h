@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <curl/curl.h>
 
-#include "common.h"
 
 typedef struct curl_slist headers;
 
@@ -30,6 +29,8 @@ typedef struct{
 }response;
 
 int requests(const request *req, response *resp);
+
+headers *add_headers(headers *h, char *header);
 
 void clear_request(request *req);
 

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "fuzzer.h"
+#include "errors.h"
 
 
 void banner(void){

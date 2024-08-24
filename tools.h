@@ -1,13 +1,9 @@
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __TOOLS_H__
+#define __TOOLS_H__
 
-#include "list.h"
 
 #define ARRAY_SIZE(x) ((sizeof(x)) / (sizeof(*x)))
 
-#define LEN_BUF 512
-
-void die(const char *msg);
 
 char *strrep(const char *str, const char *oldstr, const char *newstr);
 

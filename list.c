@@ -4,28 +4,8 @@
 #include <ctype.h>
 
 #include "list.h"
-#include "common.h"
+#include "errors.h"
 
-
-struct list *find_list(struct list *ls, const char *value){
-    struct list *cur = ls;
-    if(cur != NULL && value != NULL){
-        while(cur != NULL && strcmp(cur->data, value) != 0)
-            cur = cur->next;
-        return cur;
-    }
-    return NULL;
-}
-
-
-struct list *first_list(struct list *ls){
-    struct list *first = NULL;
-    if(ls != NULL){
-        first = ls;
-        return first;
-    }
-    return NULL;
-}
 
 struct list *last_list(struct list *ls){
     struct list *last = NULL;
@@ -42,7 +22,7 @@ struct list *last_list(struct list *ls){
 struct list *add_first(struct list *ls, const char *value){
     struct list *newls = NULL;
     if(value != NULL){
-        if((newls = (struct list*)malloc(sizeof(struct list))) != NULL){
+        if((newls = (struct list*)calloc(1, sizeof(struct list))) != NULL){
             newls->data = strdup(value);
             newls->next = ls;
             ls = newls;
@@ -78,11 +58,17 @@ void free_list(struct list **ls){
         while((*ls)->next != NULL){
             tmp = (*ls);
             (*ls) = (*ls)->next;
+
             free(tmp->data);
+            tmp->data = NULL;
+
             free(tmp);
             tmp = NULL;
         }
+
         free((*ls)->data);
+        (*ls)->data = NULL;
+
         free((*ls));
         (*ls) = NULL;
     }
