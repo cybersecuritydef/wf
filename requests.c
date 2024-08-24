@@ -30,7 +30,6 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
             else
                 die("[-] Error allocation memory!");
         }
-
     }
     return size * nitems;
 }
