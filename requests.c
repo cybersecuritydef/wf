@@ -24,7 +24,7 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
         else{
             len = strlen(r->content);
             if((r->content = (char*)realloc(r->content, (r->len + len + 1) * sizeof(char))) != NULL){
-                strncat(r->content + len, body, r->len);
+                memcpy(r->content + len, body, r->len);
                 r->content[strlen(r->content)] = '\0';
             }
             else
