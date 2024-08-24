@@ -1,7 +1,6 @@
 #ifndef __FUZZER_H__
 #define __FUZZER_H__
 
-#include "wordlists.h"
 #include "requests.h"
 #include "encode.h"
 #include "filter.h"

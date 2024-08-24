@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "payloads.h"
-#include "wordlists.h"
 
 static char *join_payloads(const char *fp, const char *sp){
     char *payload = NULL;
@@ -22,46 +21,23 @@ static char *join_payloads(const char *fp, const char *sp){
     return NULL;
 }
 
-int make_payloads(const char *url, const char *wordlist, const char *extlist, wordlists *payloads){
-    wordlists *wcur = NULL;
-    wordlists *ecur = NULL;
-    wordlists *words = NULL;
-    wordlists *exts = NULL;
-    char *tmp = NULL;
 
-    if(url == NULL)
-        return EOF;
-
-    if((words = read_wordlists(wordlist)) != NULL){
-        wcur = words;
-        while(wcur->words != NULL){
-            tmp = join_payloads(url, wcur->words->data);
-            payloads->words = add_first(payloads->words, tmp);
-            wcur->words = wcur->words->next;
-            free(tmp);
+int make_payloads(const char *url, const char *wordlist, const char *extlist, payloads *payload){
+    FILE *fword = NULL;
+    char buf[LEN_BUF] = {'\0'};
+    char *p = NULL;
+    if((fword = fopen(wordlist, "r")) != NULL){
+        while(fgets(buf, sizeof(buf), fword) != NULL){
+            buf[strlen(buf) - 1] = '\0';
+            p = join_payloads(url, buf);
+            payload->payload = add_first(payload->payload, p);
+            payload->count += 1;
+            free(p);
         }
-        clear_wordlists(words);
-        free(words);
+        fclose(fword);
     }
     else
         return EOF;
 
-    if(extlist != NULL){
-        if((exts = read_wordlists(extlist)) != NULL){
-            ecur = exts;
-            while(ecur->words != NULL){
-                wcur = payloads;
-                while(wcur->words != NULL){
-                    tmp = join_payloads(wcur->words->data, ecur->words->data);
-                    printf("%s\n", ecur->words->data);
-                    wcur->words = wcur->words->next;
-                    free(tmp);
-                }
-                ecur->words = ecur->words->next;
-            }
-            clear_wordlists(exts);
-            free(exts);
-        }
-    }
     return 0;
 }

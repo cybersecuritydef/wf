@@ -10,12 +10,12 @@
 void fuzzer(const options *opts){
     request req;
     response resp;
-    wordlists payloads;
+    payloads payload;
     struct list *cur = NULL;
     int err = 0;
     memset(&req, '\0', sizeof(req));
     memset(&resp, '\0', sizeof(resp));
-    memset(&payloads, '\0', sizeof(payloads));
+    memset(&payload, '\0', sizeof(payload));
 
     /* preparing a request */
     if(opts->method != NULL)
@@ -34,19 +34,14 @@ void fuzzer(const options *opts){
     req.verify = opts->verify;
 
     req.header = add_headers(req.header, opts->headers);
-    clear_request(&req);
-    payloads.words = add_first(payloads.words, "TEST");
-    payloads.words = add_first(payloads.words, "FUZZ");
-    payloads.words = add_first(payloads.words, "TWWWW");
-    payloads.words = add_first(payloads.words, "DASD");
-    payloads.words = add_first(payloads.words, "ads456");
-    clear_wordlists(&payloads);
+
    /* make payloads */
-    /*if(make_payloads(opts->url, opts->wordlist, opts->extlist, &payloads) == EOF){
+    if(make_payloads(opts->url, opts->wordlist, opts->extlist, &payload) == EOF){
         clear_request(&req);
         die("[-] Error make payloads!");
     }
-    cur = payloads.words;
+
+    cur = payload.payload;
     while(cur != NULL){
         req.url = strdup(cur->data);
         err = requests(&req, &resp);
@@ -62,9 +57,9 @@ void fuzzer(const options *opts){
 
         cur = cur->next;
     }
-    free_list(&payloads.words);
+    free_list(&payload.payload);
 
-    req.url = strdup(opts->url);
+    /*req.url = strdup(opts->url);
     err = requests(&req, &resp);
         if(err == 0){
             if(opts->verbose)
@@ -72,7 +67,7 @@ void fuzzer(const options *opts){
         }
         else
             printf("%s %s\n", curl_easy_strerror(err), req.url);
-    clear_response(&resp);
-    clear_request(&req);*/
+    clear_response(&resp);*/
+    clear_request(&req);
 
 }
