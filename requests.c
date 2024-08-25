@@ -33,7 +33,7 @@ int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
     struct curl_header *prev = NULL;
-    struct curl_header *h;
+    struct curl_header *cur = NULL;
     char *hdr = NULL;
     if(req != NULL && resp != NULL){
         if((curl = curl_easy_init()) != NULL){
@@ -77,10 +77,10 @@ int requests(const request *req, response *resp){
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, req->follow);
 
             if((err = curl_easy_perform(curl)) == CURLE_OK){
-                while((h = curl_easy_nextheader(curl, CURLH_HEADER | CURLH_1XX | CURLH_TRAILER, 0, prev))) {
-                    asprintf(&hdr, "%s: %s", h->name, h->value);
+                while((cur = curl_easy_nextheader(curl, CURLH_HEADER | CURLH_1XX | CURLH_TRAILER, 0, prev)) != NULL) {
+                    asprintf(&hdr, "%s: %s", cur->name, cur->value);
                     resp->header = curl_slist_append(resp->header, hdr);
-                    prev = h;
+                    prev = cur;
                     free(hdr);
                 }
                 curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
