@@ -14,7 +14,7 @@ size_t size_b64encode(const char *str){
 }
 
 size_t size_b64decode(const char *str){
-    return ((strlen(str) * 3) / 4);
+    return (((strlen(str) * 3) / 4) + 1);
 }
 
 size_t size_urlencode(const char *str){
