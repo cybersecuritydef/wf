@@ -10,22 +10,41 @@
 
 
 int make_payloads(const char *url, const char *wordlist, const char *extlist, payloads *payload){
-    FILE *fword = NULL;
+    FILE *file = NULL;
     char buf[LEN_BUF] = {'\0'};
     char *p = NULL;
+    payloads *cur = NULL;
     int status = 0;
-    if((fword = fopen(wordlist, "r")) != NULL){
-        while(fgets(buf, sizeof(buf), fword) != NULL){
+    if((file = fopen(wordlist, "r")) != NULL){
+        while(fgets(buf, sizeof(buf), file) != NULL){
             buf[strlen(buf) - 1] = '\0';
             asprintf(&p, "%s%s", url, buf);
             payload->payload = add_first(payload->payload, p);
             payload->count += 1;
             free(p);
         }
-        fclose(fword);
+        fclose(file);
     }
     else
         status = EOF;
 
+    if(extlist != NULL){
+        if((file = fopen(extlist, "r")) != NULL){
+            cur = payload;
+            while(cur->payload != NULL){
+                while(fgets(buf, sizeof(buf), file) != NULL){
+                    buf[strlen(buf) - 1] = '\0';
+                    asprintf(&p, "%s%s", cur->payload->data, buf);
+                    payload->payload = add_first(payload->payload, p);
+                    payload->count += 1;
+                    free(p);
+                }
+                cur->payload = cur->payload->next;
+            }
+            fclose(file);
+        }
+        else
+            status = EOF;
+    }
     return status;
 }

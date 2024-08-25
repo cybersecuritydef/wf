@@ -29,19 +29,12 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
 }
 
 
-static size_t get_headers(char *header, size_t size, size_t nitems, void *userdata){
-    //response *r = (response*)userdata;
-    /*if(header != NULL){
-        header[strlen(header) - 2] = '\0';
-        r->header = curl_slist_append(r->header, header);
-    }*/
-    return size * nitems;
-}
-
-
 int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
+    struct curl_header *prev = NULL;
+    struct curl_header *h;
+    char *hdr = NULL;
     if(req != NULL && resp != NULL){
         if((curl = curl_easy_init()) != NULL){
             curl_easy_setopt(curl, CURLOPT_URL, req->url);
@@ -75,9 +68,6 @@ int requests(const request *req, response *resp){
             if(req->postdata != NULL)
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
-            curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, get_headers);
-            curl_easy_setopt(curl,  CURLOPT_HEADERDATA, resp);
-
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
             curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
 
@@ -87,6 +77,12 @@ int requests(const request *req, response *resp){
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, req->follow);
 
             if((err = curl_easy_perform(curl)) == CURLE_OK){
+                while((h = curl_easy_nextheader(curl, CURLH_HEADER | CURLH_1XX | CURLH_TRAILER, 0, prev))) {
+                    asprintf(&hdr, "%s: %s", h->name, h->value);
+                    resp->header = curl_slist_append(resp->header, hdr);
+                    prev = h;
+                    free(hdr);
+                }
                 curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
                 curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
                 curl_easy_cleanup(curl);
@@ -106,7 +102,7 @@ headers *add_headers(headers *h, char *header){
     char *value = NULL;
 
     /* default headers */
-    h = curl_slist_append(h, "User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20100101 Firefox/8.0");
+    h = curl_slist_append(h, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0");
     h = curl_slist_append(h, "Accept-Language: *");
     h = curl_slist_append(h, "Accept-Encoding: *");
 

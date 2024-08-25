@@ -43,12 +43,13 @@ void fuzzer(const options *opts){
     start = time(NULL);
     tm_start = localtime(&start);
     printf("[!] Start time: %d:%d:%d\n", tm_start->tm_hour, tm_start->tm_min, tm_start->tm_sec);
+
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
+
     if(opts->extlist != NULL)
-        printf("[!] Extensions: %s\n\n", opts->extlist);
-    else
-        printf("\n");
+        printf("[!] Extensions: %s\n", opts->extlist);
+    printf("\n");
 
     /* make payloads */
     printf("[!] Generating wordlists...\n");
@@ -58,26 +59,7 @@ void fuzzer(const options *opts){
     }
 
     printf("[!] Wordlist count: %ld\n\n", payload.count);
-    cur = payload.payload;
-    while(cur != NULL){
-        req.url = strdup(cur->data);
-        err = requests(&req, &resp);
 
-        if(err == 0){
-            if(opts->verbose)
-                print(req.url, &opts->filter, &resp, opts->body);
-        }
-        else
-            printf("%s %s\n", curl_easy_strerror(err), req.url);
-
-        clear_response(&resp);
-        free(req.url);
-        req.url = NULL;
-
-        cur = cur->next;
-    }
-    free_list(&payload.payload);
-    clear_request(&req);
 
     finish = time(NULL);
     tm_finish = localtime(&finish);
