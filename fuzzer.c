@@ -68,7 +68,7 @@ void fuzzer(const options *opts){
                 print(req.url, &opts->filter, &resp, opts->body);            
         }
         else
-            fprintf(stderr, "%s\n", curl_easy_strerror(err));
+            errors(err);
         clear_response(&resp);
         free(req.url);
         cur = cur->next;
