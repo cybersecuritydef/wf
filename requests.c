@@ -131,7 +131,6 @@ void clear_request(request *req){
             req->http_ver = NULL;
         }
 
-
         if(req->cookie != NULL){
             free(req->cookie);
             req->cookie = NULL;
