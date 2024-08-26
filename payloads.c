@@ -55,3 +55,11 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     }
     return status;
 }
+
+void clear_payloads(payloads *payload){
+    if(payload != NULL){
+        if(payload->payload != NULL)
+            free_list(&payload->payload);
+        memset(payload, '\0', sizeof(payload));
+    }
+}
