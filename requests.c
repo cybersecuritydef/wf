@@ -120,13 +120,11 @@ void clear_request(request *req){
             free(req->method);
             req->method = NULL;
         }
-
-
+        
         if(req->url != NULL){
             free(req->url);
             req->url = NULL;
         }
-
 
         if(req->http_ver != NULL){
             free(req->http_ver);
@@ -139,18 +137,15 @@ void clear_request(request *req){
             req->cookie = NULL;
         }
 
-
         if(req->postdata != NULL){
             free(req->postdata);
             req->postdata = NULL;
         }
 
-
         if(req->proxy != NULL){
             free(req->proxy);
             req->proxy = NULL;
         }
-
 
         if(req->header != NULL){
             curl_slist_free_all(req->header);
