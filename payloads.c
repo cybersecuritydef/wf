@@ -47,6 +47,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
                     ext_cur = ext_cur->next;
                 }
                 cur->payload = cur->payload->next;
+            }
         }
         else
             status = EOF;
