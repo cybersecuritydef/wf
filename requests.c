@@ -8,7 +8,7 @@
 #include "errors.h"
 
 
-static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
+static size_t body(char *body, size_t size, size_t nitems, void *userdata){
     response *r = (response*)userdata;
     size_t len = 0;
     if(body != NULL){
@@ -69,7 +69,7 @@ int requests(const request *req, response *resp){
             if(req->postdata != NULL)
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, req->postdata);
 
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_body);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, body);
             curl_easy_setopt(curl,  CURLOPT_WRITEDATA, resp);
 
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, req->verify);
