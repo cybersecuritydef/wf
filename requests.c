@@ -85,11 +85,9 @@ int requests(const request *req, response *resp){
                     free(hdr);
                 }
                 curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
-                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
-                curl_easy_cleanup(curl);                
+                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);                             
             }
-            else
-                curl_easy_cleanup(curl);
+            curl_easy_cleanup(curl);
             status = err;
         }
     }
