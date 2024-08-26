@@ -11,7 +11,7 @@ static void current_time(const char *msg){
     time_t cur = 0;
     cur = time(NULL);
     tm_cur = localtime(&cur);
-    printf("%s %02d:%02d:%02d\n", msg, tm_cur->tm_hour, tm_cur->tm_min, tm_cur->tm_sec);
+    printf("%s%02d:%02d:%02d\n", msg, tm_cur->tm_hour, tm_cur->tm_min, tm_cur->tm_sec);
 }
 
 void fuzzer(const options *opts){
@@ -47,10 +47,8 @@ void fuzzer(const options *opts){
 
     req.header = add_headers(req.header, opts->headers);
 
-    start = time(NULL);
-    tm_start = localtime(&start);
-    printf("[!] Start time: %d:%d:%d\n", tm_start->tm_hour, tm_start->tm_min, tm_start->tm_sec);
-
+    current_time("[!] Start time: ");
+    
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
     if(opts->extlist != NULL)
@@ -81,7 +79,5 @@ void fuzzer(const options *opts){
     clear_request(&req);
     clear_payloads(&payload);
     
-    finish = time(NULL);
-    tm_finish = localtime(&finish);
-    printf("\n[!] Finish time: %02d:%02d:%02d\n", tm_finish->tm_hour, tm_finish->tm_min, tm_finish->tm_sec);
+    current_time("[!] Finish time: ");
 }
