@@ -61,7 +61,7 @@ void fuzzer(const options *opts){
         clear_request(&req);
         die("[-] Error make payloads!");
     }
-    printf("[!] Wordlist count: %ld\n\n", payload.count);
+    printf("[!] Payloads count: %ld\n\n", payload.count);
 
     cur = payload->payload;
     while(cur != NULL){
