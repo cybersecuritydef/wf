@@ -74,6 +74,7 @@ void fuzzer(const options *opts){
         cur = cur->next;
     }
     clear_request(&req);
+    clear_payloads(&payload);
     
     finish = time(NULL);
     tm_finish = localtime(&finish);
