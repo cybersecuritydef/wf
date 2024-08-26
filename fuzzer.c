@@ -65,12 +65,12 @@ void fuzzer(const options *opts){
         req.url = strdup(cur->data);
         if((err = requests(&req, &resp)) == 0){
             if(opts->verbose)
-                print(req.url, &opts->filter, &resp, opts->body);
-            clear_response(&resp);
-            free(req.url);
+                print(req.url, &opts->filter, &resp, opts->body);            
         }
         else
             fprintf(stderr, "%s\n", curl_easy_strerror(err));
+        clear_response(&resp);
+        free(req.url);
         cur = cur->next;
     }
     clear_request(&req);
