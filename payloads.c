@@ -31,16 +31,16 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     if(extlist != NULL){
         if((file = fopen(extlist, "r")) != NULL){
             cur = payload;
-            while(cur->payload != NULL){
-                while(fgets(buf, sizeof(buf), file) != NULL){
-                    buf[strlen(buf) - 1] = '\0';
-                    asprintf(&p, "%s%s", cur->payload->data, buf);
-                    payload->payload = add_first(payload->payload, p);
-                    payload->count += 1;
-                    free(p);
-                }
-                cur->payload = cur->payload->next;
-            }
+           while(fgets(buf, sizeof(buf), file) != NULL){
+               buf[strlen(buf) - 1] = '\0';
+               while(cur != NULL){
+                   asprintf(&p, "%s%s", cur->payload->data, buf);
+                   payload->payload = add_first(payload->payload, p);
+                   payload->count += 1;
+                   cur->payload = cur->payload->next;
+                   free(p);
+               }
+           }
             fclose(file);
         }
         else
