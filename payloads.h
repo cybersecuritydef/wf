@@ -12,4 +12,6 @@ typedef struct{
 
 int make_payloads(const char *url, const char *wordlist, const char *extlist, payloads *payload);
 
+void clear_payloads(payloads *payload);
+
 #endif
