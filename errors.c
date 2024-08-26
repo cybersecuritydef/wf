@@ -7,3 +7,10 @@ void die(const char *msg){
     fprintf(stderr, "%s\n", msg);
     exit(EOF);
 }
+
+void errors(int errcode){
+    if(errcode == EOF)
+        perror("");
+    else
+        fprintf(stderr, "%s\n", curl_easy_strerror(errcode));
+}
