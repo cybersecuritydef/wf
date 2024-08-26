@@ -6,6 +6,13 @@
 #include "fuzzer.h"
 #include "print.h"
 
+static void current_time(const char *msg){
+    struct tm *tm_cur = NULL;
+    time_t cur = 0;
+    cur = time(NULL);
+    tm_cur = localtime(&cur);
+    printf("%s %02d:%02d:%02d\n", msg, tm_cur->tm_hour, tm_cur->tm_min, tm_cur->tm_sec);
+}
 
 void fuzzer(const options *opts){
     request req;
@@ -46,7 +53,6 @@ void fuzzer(const options *opts){
 
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
-
     if(opts->extlist != NULL)
         printf("[!] Extensions: %s\n", opts->extlist);
     printf("\n");
@@ -57,7 +63,6 @@ void fuzzer(const options *opts){
         clear_request(&req);
         die("[-] Error make payloads!");
     }
-
     printf("[!] Wordlist count: %ld\n\n", payload.count);
 
     cur = payload->payload;
