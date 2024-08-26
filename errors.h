@@ -4,4 +4,6 @@
 
 void die(const char *msg);
 
+char *errors(int code);
+
 #endif
