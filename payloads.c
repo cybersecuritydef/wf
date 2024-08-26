@@ -8,7 +8,6 @@
 #include "payloads.h"
 
 
-
 int make_payloads(const char *url, const char *wordlist, const char *extlist, payloads *payload){
     FILE *file = NULL;
     char buf[LEN_BUF] = {'\0'};
@@ -27,20 +26,20 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     }
     else
         status = EOF;
-
+    
     if(extlist != NULL){
         if((file = fopen(extlist, "r")) != NULL){
             cur = payload;
-           while(fgets(buf, sizeof(buf), file) != NULL){
-               buf[strlen(buf) - 1] = '\0';
-               while(cur != NULL){
-                   asprintf(&p, "%s%s", cur->payload->data, buf);
-                   payload->payload = add_first(payload->payload, p);
-                   payload->count += 1;
-                   cur->payload = cur->payload->next;
-                   free(p);
-               }
-           }
+            while(fgets(buf, sizeof(buf), file) != NULL){
+                buf[strlen(buf) - 1] = '\0';
+                while(cur != NULL){
+                    asprintf(&p, "%s%s", cur->payload->data, buf);
+                    payload->payload = add_first(payload->payload, p);
+                    payload->count += 1;
+                    cur->payload = cur->payload->next;
+                    free(p);
+                }
+            }
             fclose(file);
         }
         else
