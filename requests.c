@@ -85,7 +85,7 @@ int requests(const request *req, response *resp){
                     free(hdr);
                 }
                 curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
-                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);                             
+                curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
             }
             curl_easy_cleanup(curl);
             status = err;
@@ -120,7 +120,7 @@ void clear_request(request *req){
             free(req->method);
             req->method = NULL;
         }
-        
+
         if(req->url != NULL){
             free(req->url);
             req->url = NULL;
@@ -150,7 +150,7 @@ void clear_request(request *req){
             curl_slist_free_all(req->header);
             req->header = NULL;
         }
-        memset(req, '\0', sizeof(req));
+        memset(&req, '\0', sizeof(req));
     }
 }
 
@@ -166,6 +166,6 @@ void clear_response(response *resp){
             curl_slist_free_all(resp->header);
             resp->header = NULL;
         }
-        memset(resp, '\0', sizeof(resp));
+        memset(&resp, '\0', sizeof(resp));
     }
 }

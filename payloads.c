@@ -28,12 +28,12 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     }
     else
         status = EOF;
-    
+
     if(extlist != NULL){
-        if((file = fopen(extlist, "r")) != NULL){            
+        if((file = fopen(extlist, "r")) != NULL){
             while(fgets(buf, sizeof(buf), file) != NULL){
                 buf[strlen(buf) - 1] = '\0';
-                ext = add_first(ext, buf);                
+                ext = add_first(ext, buf);
             }
             fclose(file);
             tmp_payload = payload->payload;
@@ -60,6 +60,6 @@ void clear_payloads(payloads *payload){
     if(payload != NULL){
         if(payload->payload != NULL)
             free_list(&payload->payload);
-        memset(payload, '\0', sizeof(payload));
+        memset(&payload, '\0', sizeof(payload));
     }
 }

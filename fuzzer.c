@@ -44,7 +44,7 @@ void fuzzer(const options *opts){
     req.header = add_headers(req.header, opts->headers);
 
     current_time("[!] Start time: ");
-    
+
     printf("[!] URL: %s\n", opts->url);
     printf("[!] Wordlist: %s\n", opts->wordlist);
     if(opts->extlist != NULL)
@@ -59,21 +59,22 @@ void fuzzer(const options *opts){
     }
     printf("[!] Payloads count: %ld\n\n", payload.count);
 
-    cur = payload->payload;
+    cur = payload.payload;
     while(cur != NULL){
         req.url = strdup(cur->data);
         if((err = requests(&req, &resp)) == 0){
             if(opts->verbose)
-                print(req.url, &opts->filter, &resp, opts->body);            
+                print(req.url, &opts->filter, &resp, opts->body);
         }
         else
             errors(err);
         clear_response(&resp);
         free(req.url);
+        req.url = NULL;
         cur = cur->next;
     }
     clear_request(&req);
     clear_payloads(&payload);
-    
+
     current_time("[!] Finish time: ");
 }
