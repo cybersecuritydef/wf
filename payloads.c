@@ -12,9 +12,9 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     FILE *file = NULL;
     char buf[LEN_BUF] = {'\0'};
     char *p = NULL;
-    payloads *cur = NULL;
+    struct list *tmp_payload = NULL;
     struct list *ext = NULL;
-    struct list *ext_cur = NULL;
+    struct list *tmp_ext = NULL;
     int status = 0;
     if((file = fopen(wordlist, "r")) != NULL){
         while(fgets(buf, sizeof(buf), file) != NULL){
@@ -36,17 +36,17 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
                 ext = add_first(ext, buf);                
             }
             fclose(file);
-            cur = payload;
-            while(cur->payload != NULL){
-                ext_cur = ext;
-                while(ext_cur != NULL){
-                    asprintf(&p, "%s%s", cur->payload->data, ext_cur->data);
+            tmp_payload = payload->payload;
+            while(tmp_payload != NULL){
+                tmp_ext = ext;
+                while(tmp_ext != NULL){
+                    asprintf(&p, "%s%s", tmp_payload->data, tmp_ext->data);
                     payload->payload = add_first(payload->payload, p);
                     payload->count += 1;
                     free(p);
-                    ext_cur = ext_cur->next;
+                    tmp_ext = tmp_ext->next;
                 }
-                cur->payload = cur->payload->next;
+                tmp_payload = tmp_payload->next;
             }
             free_list(&ext);
         }
