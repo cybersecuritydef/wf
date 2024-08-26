@@ -150,6 +150,7 @@ void clear_request(request *req){
             curl_slist_free_all(req->header);
             req->header = NULL;
         }
+        memset(req, '\0', sizeof(req));
     }
 }
 
