@@ -19,10 +19,6 @@ void fuzzer(const options *opts){
     response resp;
     payloads payload;
     struct list *cur = NULL;
-    struct tm *tm_start = NULL;
-    struct tm *tm_finish = NULL;
-    time_t start = 0;
-    time_t finish = 0;
     int err = 0;
 
     memset(&req, '\0', sizeof(req));
