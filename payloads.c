@@ -36,8 +36,8 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
                     asprintf(&p, "%s%s", cur->payload->data, buf);
                     payload->payload = add_first(payload->payload, p);
                     payload->count += 1;
-                    cur->payload = cur->payload->next;
                     free(p);
+                    cur->payload = cur->payload->next;                    
                 }
             }
             fclose(file);
