@@ -32,6 +32,7 @@ static size_t get_body(char *body, size_t size, size_t nitems, void *userdata){
 int requests(const request *req, response *resp){
     CURL *curl = NULL;
     CURLcode err = 0;
+    int status = EOF;
     struct curl_header *prev = NULL;
     struct curl_header *cur = NULL;
     char *hdr = NULL;
@@ -86,15 +87,15 @@ int requests(const request *req, response *resp){
                 curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->code);
                 curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
                 curl_easy_cleanup(curl);
-                return err;
+                status = err;
             }
             else{
                 curl_easy_cleanup(curl);
-                return err;
+                status = err;
             }
         }
     }
-    return EOF;
+    return status;
 }
 
 headers *add_headers(headers *h, char *header){
