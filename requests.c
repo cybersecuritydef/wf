@@ -165,5 +165,6 @@ void clear_response(response *resp){
             curl_slist_free_all(resp->header);
             resp->header = NULL;
         }
+        memset(resp, '\0', sizeof(resp));
     }
 }
