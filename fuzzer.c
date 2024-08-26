@@ -65,15 +65,16 @@ void fuzzer(const options *opts){
         req.url = strdup(cur->data);
         if(requests(&req, &resp) == 0){
             if(opts->verbose)
-                print(req.url, opts->filter, resp, opts->body);
-            clear_response(resp);
+                print(req.url, &opts->filter, &resp, opts->body);
+            clear_response(&resp);
             free(req.url);
         }
         else
             fprintf(stderr, "%s\n", );
         cur = cur->next;
     }
-    clear_request(req);
+    clear_request(&req);
+    
     finish = time(NULL);
     tm_finish = localtime(&finish);
     printf("\n[!] Finish time: %02d:%02d:%02d\n", tm_finish->tm_hour, tm_finish->tm_min, tm_finish->tm_sec);
