@@ -37,7 +37,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
             }
             fclose(file);
             cur = payload;
-            while(cur != NULL){
+            while(cur->payload != NULL){
                 ext_cur = ext;
                 while(ext_cur != NULL){
                     asprintf(&p, "%s%s", cur->payload->data, ext_cur->data);
