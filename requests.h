@@ -14,6 +14,8 @@ typedef struct{
     char *proxy;
     char *cookie;
     char *postdata;
+    char *auth;
+    char *usrpwd;
     headers *header;
     bool verify;
     bool follow;
