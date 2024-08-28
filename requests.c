@@ -57,6 +57,18 @@ int requests(const request *req, response *resp){
                      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
             }
 
+            if(req->auth != NULL){
+				if(strcmp(req->auth, "BASIC") == 0)
+					curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+				else if(strcmp(req->auth, "DIGEST") == 0)
+					curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST | CURLAUTH_DIGEST_IE);					
+				else if(strcmp(req->auth, "NTLM") == 0)
+					curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_NTLM | CURLAUTH_NTLM_WB);
+				else if(strcmp(req->auth, "BEARER") == 0)
+					curl_easy_setopt(curl, CURLOPT_XOAUTH2_BEARER, "token");
+				curl_setopt($curl, CURLOPT_USERPWD, req->usrpwd);
+			}
+                
             if(req->header != NULL)
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
