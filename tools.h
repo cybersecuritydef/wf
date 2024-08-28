@@ -17,4 +17,6 @@ char *strchrupper(const char *str, const int index);
 
 char *strchrlower(const char *str, const int index);
 
+char *strrdup(char *s, const char *str);
+
 #endif

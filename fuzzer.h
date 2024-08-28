@@ -6,6 +6,7 @@
 #include "filter.h"
 #include "payloads.h"
 #include "errors.h"
+#include "tools.h"
 
 
 
@@ -36,6 +37,6 @@ typedef struct{
     filters filter;
 }options;
 
-void fuzzer(const options *opts);
+void fuzzer(options *opts);
 
 #endif

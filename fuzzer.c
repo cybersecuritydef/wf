@@ -2,9 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <pthread.h>
+#include <unistd.h>
+
 
 #include "fuzzer.h"
 #include "print.h"
+
+struct pool{
+    pthread_t th;
+    filters filter;
+    bool verbose;
+    request req;
+};
+
 
 static void current_time(const char *msg){
     struct tm *tm_cur = NULL;
@@ -14,34 +25,54 @@ static void current_time(const char *msg){
     printf("%s%02d:%02d:%02d\n", msg, tm_cur->tm_hour, tm_cur->tm_min, tm_cur->tm_sec);
 }
 
-void fuzzer(const options *opts){
-    request req;
-    response resp;
-    payloads payload;
-    struct list *cur = NULL;
-    int err = 0;
 
-    memset(&req, '\0', sizeof(req));
+static void *working(void *arg){
+    struct pool *p = (struct pool*)arg;
+    response resp;
+    int err = 0;
     memset(&resp, '\0', sizeof(resp));
+    if((err = requests(&p->req, &resp)) == 0){
+        if(p->verbose)
+            print(p->req.url, &p->filter, &resp);
+    }
+    else
+        errors(err);
+    clear_response(&resp);
+    return NULL;
+}
+
+void fuzzer(options *opts){
+
+    payloads payload;
+    struct pool *p = NULL;
+    int num = 0;
+
     memset(&payload, '\0', sizeof(payload));
 
-    /* preparing a request */
-    if(opts->method != NULL)
-        req.method = strdup(opts->method);
+    if((p = (struct pool*)calloc(opts->threads, sizeof(struct pool))) == NULL)
+        die("[-] Error allocation memory!");
 
-    if(opts->version != NULL)
-        req.http_ver = strdup(opts->version);
+    for(num = 0; num < opts->threads; num++){
+        /* preparing a request */
+        if(opts->method != NULL)
+            p[num].req.method = strdup(opts->method);
 
-    if(opts->postdata != NULL)
-        req.postdata = strdup(opts->postdata);
+        if(opts->version != NULL)
+            p[num].req.http_ver = strdup(opts->version);
 
-    if(opts->cookies != NULL)
-        req.cookie = strdup(opts->cookies);
+        if(opts->postdata != NULL)
+            p[num].req.postdata = strdup(opts->postdata);
 
-    req.follow = opts->follow;
-    req.verify = opts->verify;
+        if(opts->cookies != NULL)
+            p[num].req.cookie = strdup(opts->cookies);
 
-    req.header = add_headers(req.header, opts->headers);
+        p[num].req.follow = opts->follow;
+        p[num].req.verify = opts->verify;
+        p[num].verbose = opts->verbose;
+
+        p[num].req.header = add_headers(p[num].req.header, opts->headers);
+    }
+
 
     current_time("[!] Start time: ");
 
@@ -54,27 +85,30 @@ void fuzzer(const options *opts){
     /* make payloads */
     printf("[!] Generating wordlists...\n");
     if(make_payloads(opts->url, opts->wordlist, opts->extlist, &payload) == EOF){
-        clear_request(&req);
+        for(num = 0; num < opts->threads; num++)
+            clear_request(&p[num].req);
+        free(p);
         die("[-] Error make payloads!");
     }
     printf("[!] Payloads count: %ld\n\n", payload.count);
 
-    cur = payload.payload;
-    while(cur != NULL){
-        req.url = strdup(cur->data);
-        if((err = requests(&req, &resp)) == 0){
-            if(opts->verbose)
-                print(req.url, &opts->filter, &resp, opts->body);
+    while(!isempty(payload.payload)){
+        for(num = 0; num < opts->threads; ++num){
+            p[num].req.url = pop(&payload.payload);
+            pthread_create(&p[num].th, NULL, working, &p[num]);
+            payload.count--;
         }
-        else
-            errors(err);
-        clear_response(&resp);
-        free(req.url);
-        req.url = NULL;
-        cur = cur->next;
-    }
-    clear_request(&req);
-    clear_payloads(&payload);
 
-    current_time("[!] Finish time: ");
+        for(num = 0; num < opts->threads; ++num){
+            pthread_join(p[num].th, NULL);
+            free(p[num].req.url);
+        }
+        if(opts->threads >= payload.count)
+            opts->threads = payload.count;
+    }
+
+    memset(&payload, '\0', sizeof(payloads));
+    free(p);
+
+    current_time("\n[!] Finish time: ");
 }

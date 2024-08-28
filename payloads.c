@@ -12,15 +12,15 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     FILE *file = NULL;
     char buf[LEN_BUF] = {'\0'};
     char *p = NULL;
-    struct list *tmp_payload = NULL;
-    struct list *ext = NULL;
-    struct list *tmp_ext = NULL;
+    struct stack *tmp_payload = NULL;
+    struct stack *ext = NULL;
+    struct stack *tmp_ext = NULL;
     int status = 0;
     if((file = fopen(wordlist, "r")) != NULL){
         while(fgets(buf, sizeof(buf), file) != NULL){
             buf[strlen(buf) - 1] = '\0';
             asprintf(&p, "%s%s", url, buf);
-            payload->payload = add_first(payload->payload, p);
+            push(&payload->payload, p);
             payload->count += 1;
             free(p);
         }
@@ -29,7 +29,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
     else
         status = EOF;
 
-    if(extlist != NULL){
+    /*if(extlist != NULL){
         if((file = fopen(extlist, "r")) != NULL){
             while(fgets(buf, sizeof(buf), file) != NULL){
                 buf[strlen(buf) - 1] = '\0';
@@ -41,7 +41,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
                 tmp_ext = ext;
                 while(tmp_ext != NULL){
                     asprintf(&p, "%s%s", tmp_payload->data, tmp_ext->data);
-                    payload->payload = add_first(payload->payload, p);
+                    push(&payload->payload, p);
                     payload->count += 1;
                     free(p);
                     tmp_ext = tmp_ext->next;
@@ -52,14 +52,7 @@ int make_payloads(const char *url, const char *wordlist, const char *extlist, pa
         }
         else
             status = EOF;
-    }
+    }*/
     return status;
 }
 
-void clear_payloads(payloads *payload){
-    if(payload != NULL){
-        if(payload->payload != NULL)
-            free_list(&payload->payload);
-        memset(&payload, '\0', sizeof(payload));
-    }
-}

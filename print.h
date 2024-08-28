@@ -3,6 +3,6 @@
 
 #include "fuzzer.h"
 
-void print(const char *url, const filters *filter, const response *resp, const bool body);
+void print(const char *url, const filters *filter, const response *resp);
 
 #endif

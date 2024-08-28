@@ -56,17 +56,19 @@ int requests(const request *req, response *resp){
                 else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
                      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
             }
-		
+
 	    if(req->auth != NULL){
-		if(strcmp(req->auth, "BASIC") == 0)
-			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		else if(strcmp(req->auth, "DIGEST") == 0)
-			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST | CURLAUTH_DIGEST_IE);					
-		else if(strcmp(req->auth, "NTLM") == 0)
-			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_NTLM | CURLAUTH_NTLM_WB);		
-		curl_setopt($curl, CURLOPT_USERPWD, req->usrpwd);
+            if(strcmp(req->auth, "BASIC") == 0)
+                curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            else if(strcmp(req->auth, "DIGEST") == 0)
+                curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST | CURLAUTH_DIGEST_IE);
+            else if(strcmp(req->auth, "NTLM") == 0)
+                curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_NTLM | CURLAUTH_NTLM_WB);
+            else if(strcmp(req->auth, "GSSAPI") == 0)
+                curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_GSSNEGOTIATE);
+            curl_easy_setopt(curl, CURLOPT_USERPWD, req->usrpwd);
 	    }
-                
+
             if(req->header != NULL)
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER , req->header);
 
@@ -154,6 +156,16 @@ void clear_request(request *req){
         if(req->proxy != NULL){
             free(req->proxy);
             req->proxy = NULL;
+        }
+
+        if(req->auth != NULL){
+            free(req->auth);
+            req->auth = NULL;
+        }
+
+        if(req->usrpwd != NULL){
+            free(req->usrpwd);
+            req->usrpwd = NULL;
         }
 
         if(req->header != NULL){

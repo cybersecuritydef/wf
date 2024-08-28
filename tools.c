@@ -102,3 +102,19 @@ char *strchrlower(const char *str, const int index){
     }
     return NULL;
 }
+
+char *strrdup(char *s, const char *str){
+    size_t len = 0;
+    if(str != NULL){
+        if(s != NULL){
+            len = strlen(str);
+            if((s = (char*)realloc(s, sizeof(char) * (len + 1))) != NULL){
+                memcpy(s, str, len);
+                s[len] = '\0';
+            }
+        }
+        else
+            s = strdup(str);
+    }
+    return s;
+}
