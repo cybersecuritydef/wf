@@ -56,6 +56,7 @@ int requests(const request *req, response *resp){
                 else if(strcmp(req->http_ver, "HTTP/2.0") == 0 || strcmp(req->http_ver, "HTTP/2") == 0)
                      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
             }
+		
 	    if(req->auth != NULL){
 		if(strcmp(req->auth, "BASIC") == 0)
 			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
