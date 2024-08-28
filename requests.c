@@ -63,9 +63,7 @@ int requests(const request *req, response *resp){
 		else if(strcmp(req->auth, "DIGEST") == 0)
 			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST | CURLAUTH_DIGEST_IE);					
 		else if(strcmp(req->auth, "NTLM") == 0)
-			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_NTLM | CURLAUTH_NTLM_WB);
-		else if(strcmp(req->auth, "BEARER") == 0)
-			curl_easy_setopt(curl, CURLOPT_XOAUTH2_BEARER, "token");
+			curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_NTLM | CURLAUTH_NTLM_WB);		
 		curl_setopt($curl, CURLOPT_USERPWD, req->usrpwd);
 	    }
                 
