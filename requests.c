@@ -49,6 +49,8 @@ int requests(const request *req, response *resp){
             }
 
             if(req->http_ver != NULL){
+		if(strcmp(req->http_ver, "HTTP/0.9") == 0)
+                    curl_easy_setopt(curl, CURLOPT_HTTP09_ALLOWED, 1L);
                 if(strcmp(req->http_ver, "HTTP/1.0") == 0)
                     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
                 else if(strcmp(req->http_ver, "HTTP/1.1") == 0)
